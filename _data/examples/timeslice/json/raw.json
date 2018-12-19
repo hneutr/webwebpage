@@ -1,0 +1,130 @@
+{
+    "display": {
+        "colorBy": "isHead",
+        "labels": {},
+        "networkLayer": 0,
+        "webOnly": false
+    },
+    "network": {
+        "oroboros": {
+            "layers": [
+                {
+                    "adjList": [
+                        [
+                            0,
+                            1
+                        ],
+                        [
+                            1,
+                            2
+                        ],
+                        [
+                            2,
+                            3
+                        ]
+                    ],
+                    "labels": {
+                        "isHead": {
+                            "value": [
+                                false,
+                                false,
+                                false,
+                                true
+                            ]
+                        }
+                    },
+                    "nodes": 4
+                },
+                {
+                    "adjList": [
+                        [
+                            0,
+                            1
+                        ],
+                        [
+                            1,
+                            2
+                        ],
+                        [
+                            2,
+                            3
+                        ],
+                        [
+                            3,
+                            0
+                        ]
+                    ],
+                    "labels": {
+                        "isHead": {
+                            "value": [
+                                false,
+                                false,
+                                false,
+                                true
+                            ]
+                        }
+                    },
+                    "nodes": 4
+                },
+                {
+                    "adjList": [
+                        [
+                            0,
+                            1
+                        ],
+                        [
+                            1,
+                            2
+                        ],
+                        [
+                            2,
+                            0
+                        ]
+                    ],
+                    "labels": {
+                        "isHead": {
+                            "value": [
+                                false,
+                                false,
+                                true
+                            ]
+                        }
+                    },
+                    "nodes": 3
+                },
+                {
+                    "adjList": [
+                        [
+                            0,
+                            1
+                        ],
+                        [
+                            1,
+                            0
+                        ]
+                    ],
+                    "labels": {
+                        "isHead": {
+                            "value": [
+                                false,
+                                true
+                            ]
+                        }
+                    },
+                    "nodes": 2
+                },
+                {
+                    "adjList": [],
+                    "labels": {
+                        "isHead": {
+                            "value": [
+                                true
+                            ]
+                        }
+                    },
+                    "nodes": 1
+                }
+            ]
+        }
+    }
+}

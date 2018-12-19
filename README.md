@@ -10,3 +10,10 @@ instructions on getting the site up:
         - I copied this from the output from running the first command, for you it might be different
 - install jekyll:
     - `gem install bundler jekyll`
+- possibly run `bundler`
+- run `bundle exec jekyll serve`
+
+# instructions on regenerating the documentation:
+- clone webweb into the root directory
+- run `python examplify.py`
+- presto!

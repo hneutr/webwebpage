@@ -1,0 +1,10 @@
+[
+    "function run_example_1()\n",
+    "    % EXAMPLE 1\n",
+    "    % create a 100 node adjacency matrix A\n",
+    "    A = floor(1.01 * rand(100,100)); \n",
+    "    A = A + A'; \n",
+    "    A(A>0) = 1;\n",
+    "    webweb(A);\n",
+    "end"
+]

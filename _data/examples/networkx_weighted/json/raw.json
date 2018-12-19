@@ -1,0 +1,61 @@
+{
+    "display": {
+        "labels": {},
+        "scaleLinkOpacity": true,
+        "scaleLinkWidth": true,
+        "webOnly": false
+    },
+    "network": {
+        "networkx": {
+            "layers": [
+                {
+                    "adjList": [
+                        [
+                            0,
+                            1,
+                            1
+                        ],
+                        [
+                            0,
+                            3,
+                            25
+                        ],
+                        [
+                            1,
+                            2,
+                            150
+                        ],
+                        [
+                            2,
+                            3,
+                            10
+                        ],
+                        [
+                            3,
+                            4,
+                            100
+                        ],
+                        [
+                            4,
+                            5,
+                            70
+                        ]
+                    ],
+                    "labels": {
+                        "name": {
+                            "value": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                            ]
+                        }
+                    },
+                    "nodes": 6
+                }
+            ]
+        }
+    }
+}

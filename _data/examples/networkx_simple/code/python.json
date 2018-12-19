@@ -1,0 +1,17 @@
+[
+    "from webweb.webweb import webweb\n",
+    "import networkx as nx\n",
+    "import random\n",
+    "\n",
+    "# Instantiate webweb object\n",
+    "web = webweb()\n",
+    "\n",
+    "# make a simple gnp random graph\n",
+    "G = nx.fast_gnp_random_graph(100, .15)\n",
+    "\n",
+    "# Assign adjaceny lists in network\n",
+    "web.networks.networkx.add_layer_from_networkx_graph(G)\n",
+    "\n",
+    "# Launch webbrowser with result\n",
+    "web.draw()"
+]

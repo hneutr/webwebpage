@@ -1,0 +1,20 @@
+[
+    "from webweb.webweb import webweb\n",
+    "import random\n",
+    "\n",
+    "N = 100\n",
+    "\n",
+    "adjaceny_list = [[random.randint(0, N), random.randint(0, N), 1] for _ in range(N)]\n",
+    "\n",
+    "# Instantiate webweb object\n",
+    "web = webweb()\n",
+    "\n",
+    "# Assign adjaceny lists in network\n",
+    "web.networks.simple.add_layer(adjaceny_list)\n",
+    "\n",
+    "# Assign node names\n",
+    "web.display.nodeNames = [\"example class {}\".format(node_i) for node_i in range(N)]\n",
+    "\n",
+    "# Launch webbrowser\n",
+    "web.draw()"
+]

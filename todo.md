@@ -1,0 +1,39 @@
+webwebpage.com
+
+- pages:
+    - index:
+        - what it is!
+        - how to install it
+            - python
+            - matlab
+        - how to use it:
+            - inline code for
+                - python
+                - matlab
+    - gallery
+        - with toggle between:
+            - viz
+            - code
+            - json
+    - abstractions
+        - display
+        - networks
+            - layers
+    - parameters
+        - list them
+            - display.etcetc
+        - link to an example with it
+    - adding language support
+        - show examples of json
+
+- autogenerate examples:
+    - things we have:
+        - have repo of examples
+            - examples/matlab/...
+            - examples/python/...
+            - examples/json/...
+        - eg:
+            - examples/matlab/simple.m
+            - examples/python/simple.py
+            - examples/json/simple.json
+    - things we want:
