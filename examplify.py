@@ -8,6 +8,7 @@ import webbrowser
 import json
 from collections import defaultdict
 import yaml
+import shutil
 
 DEFAULT_INPUT_DIR = os.path.join(os.getcwd(), 'webweb', 'examples')
 DEFAULT_DATA_OUTPUT_DIR = os.path.join(os.getcwd(), '_data', 'examples')
@@ -81,15 +82,57 @@ def get_example_page(name, language_file_map, example_number):
         'nav_order' : example_number,
     }
 
-    content = []
-    for language_name in language_file_map.keys():
-        line = "```{0}\n{{{{site.data.examples.{1}.code.{0}}}}}\n```".format(language_name, name)
-        content.append(line)
+    # we always have python code, so be consistent and show it first
+    # and show json last
+    forced_order = [
+        ('python', 'site.data.examples.{}.code.python'.format(name)),
+        ('matlab', 'site.data.examples.{}.code.matlab'.format(name)),
+        ('json', 'site.data.examples.{}.json.pretty'.format(name)),
+    ]
 
-    content.append("```json\n{{{{site.data.examples.{0}.json.pretty}}}}\n```".format(name))
+    language_file_map['json'] = 1
+
+    code_select_options_string = "\n".join([
+        "{%- capture code_options -%}",
+        "---".join([l for l, _ in forced_order if language_file_map.get(l)]),
+        "{%- endcapture -%}",
+    ])
+
+    code_select_include_string = "{% include code_switcher.html code_options=code_options %}"
+
+    code_blocks = []
+    for language, language_data_path in forced_order:
+        if not language_file_map.get(language):
+            continue
+
+        code_display_string = "```{0}\n{{{{{1}}}}}\n```".format(language, language_data_path)
+
+        classes = ["select-code-block"]
+
+        # python will be visible
+        if language == 'python':
+            classes.append("select-code-block-visible")
+
+        class_string = " ".join(classes)
+
+        id_string = "{}-code-block".format(language)
+
+        code_div_string = "<div id='{0}' class='{1}'></div>".format(id_string, class_string)
+
+        code_block = "\n".join([code_div_string, code_display_string])
+
+        code_blocks.append(code_block)
+
+    code_blocks_string = "\n".join(code_blocks)
+
+    content = "\n".join([
+        code_select_options_string,
+        code_select_include_string,
+        code_blocks_string
+    ])
 
     return {
-        'content' : "\n".join(content),
+        'content' : content,
         'frontmatter' : frontmatter,
     }
 
@@ -115,6 +158,38 @@ def make_examples(input_dir, data_output_dir, pages_output_dir):
         example_page_output_file = os.path.join(pages_output_dir, name + '.md')
         example_page = get_example_page(name, language_file_map, number + 1)
         write_example_page(example_page_output_file, example_page)
+
+def prepare_data_output_dir(data_output_dir):
+    """makes the data directory if it doesn't exist
+    cleans the data directory if it does"""
+    if not os.path.exists(data_output_dir):
+        os.mkdir(data_output_dir)
+        return
+
+    for thing in os.listdir(data_output_dir):
+        thing_path = os.path.join(data_output_dir, thing)
+
+        if os.path.isdir(thing_path):
+            shutil.rmtree(thing_path)
+
+def prepare_pages_output_dir(pages_output_dir):
+    """makes the pages directory if it doesn't exist
+    cleans the pages directory if it does"""
+    if not os.path.exists(pages_output_dir):
+        os.mkdir(pages_output_dir)
+        return
+
+    example_pages = os.listdir(pages_output_dir)
+
+    example_pages = [p for p in example_pages if p != 'examples.md']
+
+    for page in os.listdir(pages_output_dir):
+        # we don't want to remove the index file
+        if page == 'examples.md':
+            continue
+
+        page_path = os.path.join(pages_output_dir, page)
+        os.unlink(page_path)
 
 
 def get_examples_map(input_dir):
@@ -145,10 +220,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if not os.path.exists(args.data_output_dir):
-        os.mkdir(args.data_output_dir)
-
-    if not os.path.exists(args.pages_output_dir):
-        os.mkdir(args.pages_output_dir)
+    prepare_data_output_dir(args.data_output_dir)
+    prepare_pages_output_dir(args.pages_output_dir)
 
     make_examples(args.input_dir, args.data_output_dir, args.pages_output_dir)

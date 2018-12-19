@@ -1,8 +1,7 @@
 {
     "display": {
         "labels": {},
-        "showWebOnly": true,
-        "webOnly": false
+        "showWebOnly": true
     },
     "network": {
         "simple": {

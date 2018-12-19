@@ -10,11 +10,11 @@ webwebpage.com
             - inline code for
                 - python
                 - matlab
-    - gallery
-        - with toggle between:
-            - viz
-            - code
-            - json
+    - examples:
+        - add viz
+            - requires: 
+                - changing raw.json
+                - including the webweb files
     - abstractions
         - display
         - networks
@@ -25,15 +25,3 @@ webwebpage.com
         - link to an example with it
     - adding language support
         - show examples of json
-
-- autogenerate examples:
-    - things we have:
-        - have repo of examples
-            - examples/matlab/...
-            - examples/python/...
-            - examples/json/...
-        - eg:
-            - examples/matlab/simple.m
-            - examples/python/simple.py
-            - examples/json/simple.json
-    - things we want:

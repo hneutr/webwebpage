@@ -2,8 +2,7 @@
     "display": {
         "labels": {},
         "scaleLinkOpacity": true,
-        "scaleLinkWidth": true,
-        "webOnly": false
+        "scaleLinkWidth": true
     },
     "network": {
         "networkx": {

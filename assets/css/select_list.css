@@ -1,22 +1,9 @@
 ---
 ---
 
-@import "main";
-/* CodePen demo: credit https://speckyboy.com/open-source-css-javascript-select-box-snippets/ */
+@import "";
 
-/* body { */
-/*   background: #2a2a2b; */
-/*   color: #fff; */
-/*   text-align: center; */
-/*   font-family: Arial, Helvetica; */
-/* } */
-
-.square {
-  width: .7em;
-  height: .7em;
-  margin: .5em;
-  display: inline-block;
-}
+/* credit https://speckyboy.com/open-source-css-javascript-select-box-snippets/ */
 
 /* Custom dropdown */
 .custom-dropdown {
@@ -78,4 +65,12 @@
 
 .custom-dropdown::after {
   color: rgba(0,0,0,.4);
+}
+
+.select-code-block + div.highlighter-rouge {
+    display: none;
+}
+
+.select-code-block-visible.select-code-block + div.highlighter-rouge {
+    display: block;
 }

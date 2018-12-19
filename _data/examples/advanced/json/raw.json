@@ -32,8 +32,7 @@
             "donnie"
         ],
         "sizeBy": "isHead",
-        "w": 200,
-        "webOnly": false
+        "w": 200
     },
     "network": {
         "small_snake": {

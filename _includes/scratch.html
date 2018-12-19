@@ -1,0 +1,11 @@
+
+{%- capture code_options -%}
+    python+++{{site.data.examples.simple.code.python}}---
+    matlab+++{{site.data.examples.simple.code.matlab}}---
+    json+++{{site.data.examples.simple.json.pretty}}
+{%- endcapture -%}
+
+        {%- for option_with_name in code_options %}
+            {%- assign split_option=option_with_name | split: "+++" -%}
+            {%- assign option_name=split_option[0] -%}<option value="{{option_name}}">{{option_name}}</option>
+        {%- endfor -%}

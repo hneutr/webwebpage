@@ -2,8 +2,7 @@
     "display": {
         "colorBy": "isHead",
         "labels": {},
-        "networkLayer": 0,
-        "webOnly": false
+        "networkLayer": 0
     },
     "network": {
         "oroboros": {
