@@ -1,7 +1,7 @@
 # webpage for webweb
 
 instructions on getting the site up:
-- set your path gems path:
+- set your path gems path in bashrc/zshrc/etc:
     - `export GEM_HOME=$HOME/.gems`
         - note that:
             1. it's more standard to do $HOME/gems, I just hate unhidden library files
