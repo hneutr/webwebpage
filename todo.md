@@ -25,3 +25,24 @@ webwebpage.com
         - link to an example with it
     - adding language support
         - show examples of json
+
+- copy code
+- get started with webweb
+- describe each example
+
+TODO:
+- dan:
+    - push changes
+    - read through draft site
+        - NOTE: 
+            - the content is in /docs
+    - migrate matlab examples so they are the same
+        - put them in examples/matlab
+- minimal example
+    - fully self-contained all html webweb file
+- json:
+    - show ...s for \< 10
+- examples:
+    - matlab
+    - python
+    - networkx
