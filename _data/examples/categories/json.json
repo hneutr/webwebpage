@@ -1,0 +1,65 @@
+{
+    "display": {
+        "attachWebToElementWithId": "webweb-example-visualization",
+        "colorBy": "alphabeticallity",
+        "colorPalette": "Dark2",
+        "labels": {},
+        "nodeNames": [
+            "huberg",
+            "pierot",
+            "slartibartfast",
+            "cheese"
+        ],
+        "showWebOnly": true
+    },
+    "network": {
+        "square": {
+            "layers": [
+                {
+                    "adjList": [
+                        [
+                            0,
+                            1
+                        ],
+                        [
+                            1,
+                            2
+                        ],
+                        [
+                            2,
+                            3
+                        ],
+                        [
+                            3,
+                            0
+                        ]
+                    ],
+                    "labels": {
+                        "alphabeticallity": {
+                            "categories": [
+                                "A-Z",
+                                "a-z",
+                                "nope",
+                                "yep"
+                            ],
+                            "value": [
+                                0,
+                                1,
+                                2,
+                                3
+                            ]
+                        },
+                        "cooperativity": {
+                            "value": [
+                                "high",
+                                "low",
+                                "medium",
+                                "medium"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

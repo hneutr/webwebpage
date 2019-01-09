@@ -6,15 +6,16 @@ title: advanced
 
 ---
 
-{%- capture code_options -%}
-python---json
-{%- endcapture -%}
-{% include code_switcher.html code_options=code_options %}
+<div id='webweb-example-visualization' style='width: 100%'></div>
+{% assign webweb_json=site.data.examples.advanced.json | jsonify %}
+{% include webweb_dependencies.html webweb_json=webweb_json %}
+
+{% include code_switcher.html code_options="python---json" %}
 <div id='python-code-block' class='select-code-block select-code-block-visible'></div>
 ```python
-{{site.data.examples.advanced.code.python}}
+{{site.data.examples.advanced.representations.python}}
 ```
 <div id='json-code-block' class='select-code-block'></div>
 ```json
-{{site.data.examples.advanced.json.pretty}}
+{{site.data.examples.advanced.representations.json}}
 ```

@@ -6,19 +6,20 @@ title: simple
 
 ---
 
-{%- capture code_options -%}
-python---matlab---json
-{%- endcapture -%}
-{% include code_switcher.html code_options=code_options %}
+<div id='webweb-example-visualization' style='width: 100%'></div>
+{% assign webweb_json=site.data.examples.simple.json | jsonify %}
+{% include webweb_dependencies.html webweb_json=webweb_json %}
+
+{% include code_switcher.html code_options="python---matlab---json" %}
 <div id='python-code-block' class='select-code-block select-code-block-visible'></div>
 ```python
-{{site.data.examples.simple.code.python}}
+{{site.data.examples.simple.representations.python}}
 ```
 <div id='matlab-code-block' class='select-code-block'></div>
 ```matlab
-{{site.data.examples.simple.code.matlab}}
+{{site.data.examples.simple.representations.matlab}}
 ```
 <div id='json-code-block' class='select-code-block'></div>
 ```json
-{{site.data.examples.simple.json.pretty}}
+{{site.data.examples.simple.representations.json}}
 ```
