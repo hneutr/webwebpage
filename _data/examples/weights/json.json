@@ -1,0 +1,48 @@
+{
+    "display": {
+        "labels": {},
+        "scaleLinkOpacity": true,
+        "scaleLinkWidth": true
+    },
+    "network": {
+        "simple": {
+            "layers": [
+                {
+                    "adjList": [
+                        [
+                            0,
+                            1,
+                            1
+                        ],
+                        [
+                            1,
+                            2,
+                            15
+                        ],
+                        [
+                            2,
+                            3,
+                            10
+                        ],
+                        [
+                            3,
+                            4,
+                            100
+                        ],
+                        [
+                            4,
+                            5,
+                            70
+                        ],
+                        [
+                            0,
+                            3,
+                            25
+                        ]
+                    ],
+                    "labels": null
+                }
+            ]
+        }
+    }
+}

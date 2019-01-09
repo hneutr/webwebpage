@@ -1,4 +1,5 @@
 ---
+grand_parent: null
 layout: home
 nav_order: 1
 parent: examples
@@ -6,9 +7,7 @@ title: advanced
 
 ---
 
-<div id='webweb-example-visualization' style='width: 100%'></div>
-{% assign webweb_json=site.data.examples.advanced.json | jsonify %}
-{% include webweb_dependencies.html webweb_json=webweb_json %}
+{% include webweb.html webweb_json=site.data.examples.advanced.json %}
 
 {% include code_switcher.html code_options="python---json" %}
 <div id='python-code-block' class='select-code-block select-code-block-visible'></div>

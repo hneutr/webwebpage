@@ -1,6 +1,5 @@
 {
     "display": {
-        "attachWebToElementWithId": "webweb-example-visualization",
         "c": 200,
         "colorBy": "hunger",
         "colorPalette": "Set2",
@@ -31,7 +30,6 @@
             "ted",
             "donnie"
         ],
-        "showWebOnly": true,
         "sizeBy": "isHead"
     },
     "network": {

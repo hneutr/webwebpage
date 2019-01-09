@@ -1,6 +1,5 @@
 {
     "display": {
-        "attachWebToElementWithId": "webweb-example-visualization",
         "colorBy": "alphabeticallity",
         "colorPalette": "Dark2",
         "labels": {},
@@ -9,8 +8,7 @@
             "pierot",
             "slartibartfast",
             "cheese"
-        ],
-        "showWebOnly": true
+        ]
     },
     "network": {
         "square": {

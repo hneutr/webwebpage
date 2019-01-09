@@ -1,14 +1,13 @@
 ---
+grand_parent: null
 layout: home
-nav_order: 5
+nav_order: 4
 parent: examples
 title: simple
 
 ---
 
-<div id='webweb-example-visualization' style='width: 100%'></div>
-{% assign webweb_json=site.data.examples.simple.json | jsonify %}
-{% include webweb_dependencies.html webweb_json=webweb_json %}
+{% include webweb.html webweb_json=site.data.examples.simple.json %}
 
 {% include code_switcher.html code_options="python---python (networkx)---matlab---json" %}
 <div id='python-code-block' class='select-code-block select-code-block-visible'></div>

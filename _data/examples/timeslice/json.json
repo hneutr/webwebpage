@@ -1,10 +1,8 @@
 {
     "display": {
-        "attachWebToElementWithId": "webweb-example-visualization",
         "colorBy": "isHead",
         "labels": {},
-        "networkLayer": 0,
-        "showWebOnly": true
+        "networkLayer": 0
     },
     "network": {
         "oroboros": {
