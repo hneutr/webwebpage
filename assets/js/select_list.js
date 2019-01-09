@@ -4,7 +4,8 @@ function changeCodeDisplay(selectlist) {
         var language = selectlist.options[i].value;
 
         if (language !== undefined) {
-            language = language.replace(/\s/g, '');
+            language = language.replace(/\s/g, '_');
+            language = language.replace(/\W+/g, '');
             languages.push(language);
         }
     }

@@ -2,12 +2,10 @@
     "display": {
         "attachWebToElementWithId": "webweb-example-visualization",
         "labels": {},
-        "scaleLinkOpacity": true,
-        "scaleLinkWidth": true,
         "showWebOnly": true
     },
     "network": {
-        "networkx": {
+        "simple": {
             "layers": [
                 {
                     "adjList": [
@@ -17,14 +15,9 @@
                             1
                         ],
                         [
-                            0,
-                            3,
-                            25
-                        ],
-                        [
                             1,
                             2,
-                            150
+                            15
                         ],
                         [
                             2,
@@ -40,21 +33,14 @@
                             4,
                             5,
                             70
+                        ],
+                        [
+                            0,
+                            3,
+                            25
                         ]
                     ],
-                    "labels": {
-                        "name": {
-                            "value": [
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null
-                            ]
-                        }
-                    },
-                    "nodes": 6
+                    "labels": null
                 }
             ]
         }

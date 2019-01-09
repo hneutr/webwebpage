@@ -9,6 +9,7 @@ import json
 from collections import defaultdict
 import yaml
 import shutil
+import re
 
 DEFAULT_INPUT_DIR = os.path.join(os.getcwd(), 'webweb', 'examples')
 DEFAULT_DATA_OUTPUT_DIR = os.path.join(os.getcwd(), '_data', 'examples')
@@ -108,7 +109,10 @@ class Example(object):
 
         # write each representation
         for representation_name, content in self.representations.items():
-            fn = os.path.join(self.representations_directory_name, representation_name + '.json')
+            fn = os.path.join(
+                self.representations_directory_name,
+                self.writeable_representation(representation_name) + '.json'
+            )
 
             with open(fn, 'w') as f:
                 json.dump(content, f, indent=4, sort_keys=True)
@@ -134,7 +138,7 @@ class Example(object):
         # we always have python code so to be consistent we will show:
         # - python first
         # - json last
-        representation_ordering = ['python', 'matlab', 'json']
+        representation_ordering = ['python', 'python (networkx)', 'matlab', 'json']
 
         ordered_representations = [rep for rep in representation_ordering if self.representations.get(rep)]
 
@@ -150,14 +154,24 @@ class Example(object):
 
         return "\n".join([select_include, options])
 
+    def writeable_representation(self, representation):
+        return re.sub(r'\W+', '', representation.replace(' ', '_'))
+
     def get_representation_select_option(self, representation):
+        writeable_representation = self.writeable_representation(representation)
+
         representation_content_path = 'site.data.examples.{name}.representations.{representation}'.format(
             name=self.name,
-            representation=representation,
+            representation=writeable_representation,
         )
 
-        content = "```{representation}\n{{{{{content_path}}}}}\n```".format(
-            representation=representation, 
+        language = representation
+
+        if representation == 'python (networkx)':
+            language = 'python'
+
+        content = "```{language}\n{{{{{content_path}}}}}\n```".format(
+            language=language, 
             content_path=representation_content_path,
         )
 
@@ -168,7 +182,7 @@ class Example(object):
             representation_display_classes.append("select-code-block-visible")
 
         div = "<div id='{representation}-code-block' class='{class_string}'></div>".format(
-            representation=representation,
+            representation=writeable_representation,
             class_string=" ".join(representation_display_classes),
         )
 
