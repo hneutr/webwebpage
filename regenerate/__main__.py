@@ -8,7 +8,7 @@ import subprocess
 
 import util
 
-WEBWEB_URL = "https://github.com/hneutr/webweb.git"
+WEBWEB_URL = "https://github.com/dblarremore/webweb.git"
 WEBWEB_DIR = os.path.join(os.getcwd(), 'webweb')
 
 JEKYLL_ASSETS_DIR = os.path.join(os.getcwd(), 'assets')
@@ -65,8 +65,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     args = parser.parse_args()
 
-    print("RUNNING FROM HUNTER's REPO")
-
     refresh_webweb()
     examplify(EXAMPLES_INPUT_DIR, EXAMPLES_DATA_OUTPUT_DIR, EXAMPLES_PAGES_OUTPUT_DIR)
-    docutize(DOCUMENTATION_INPUT_DIR, DOCUMENTATION_DATA_OUTPUT_DIR, DOCUMENTATION_PAGES_OUTPUT_DIR)
+    # docutize(DOCUMENTATION_INPUT_DIR, DOCUMENTATION_DATA_OUTPUT_DIR, DOCUMENTATION_PAGES_OUTPUT_DIR)

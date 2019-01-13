@@ -17,29 +17,28 @@ var displayDefaults = {
     'g' : 0.1, // gravity
     'l' : 20, // edge length
     'r' : 5, // node radius
-    'linkStrength' : 1, // link strength
-    'colorPalette' : 'Set1', // ... yaknow
+    'linkStrength' : 1,
+    'colorPalette' : 'Set1',
+    'networkLayer' : 0,
+    'metadata' : {},
+    'nameToMatch' : "",
 };
 
 var display = {};
 var networkNames;
-var networks;
 
 var links = [];
 var nodes = [];
+var scales = {};
 var node, simulation, link;
 
 var nodePersistence = [];
-
-var scaleSize, scaleColorScalar, scaleColorCategory, scaleLink, scaleLinkOpacity;
-
-var nameToMatch;
 
 var colorData = {
     'type' : 'none',
     'scaledValues' : [],
     'rawValues' : [],
-    'labels' : {},
+    'metadata' : {},
     'categoryNames' : [],
 };
 
@@ -47,73 +46,26 @@ var sizeData = {
     'type' : 'none',
     'scaledValues' : [],
     'rawValues' : [],
-    'labels' : {},
+    'metadata' : {},
     'R' : 0,
 };
 
-// Initialize the actual viz
-function initializeVis() {
-    // set up the DOM
-    var center = d3.select("body")
-        .append("div")
-        .attr("id", "webweb-center");
-
-    var menu = center.append("div")
-        .attr("id", "webweb-menu");
-
-    var chart = center.append("div")
-        .attr("id", "webweb-chart");
-
-    initWebweb();
-    writeMenus(menu);
-    displayNetwork();
-}
-// updateVis: the update version of initializeVis
-// called when a file is dragged & dropped
-function updateVis(wwdata) {
-    // remove the old SVG div
-    d3.select("#svg_div").remove();
-
-    initWebweb();
-    updateNetworkSelectMenu();
-    displayNetwork();
-}
 ////////////////////////////////////////////////////////////////////////////////
-// - makes the svg
-// - loads params from `display` (or defaults them)
-// - sets the page title
-// - sets up the simulation and `node` d3 magic voodoos
-// - scales stuff
+// initializeWebweb
 //
-// Parameters currently passed through:
-// - N (if necessary)
-// - w, h, c, l, r, g
-// - colorBy
-// - sizeBy
-// - scaleLinkOpacity
-// - scaleLinkWidth
-// - freezeNodeMovement
-// - networkName
-// - nodeCoordinates
+// run once on startup
+//
+// - loads webweb data
+// - standardizes its representation
+// - sets up the scales
+// - initializes the webweb html
+// - computes and draws nodes
 ////////////////////////////////////////////////////////////////////////////////
-function initWebweb() {
-    networkNames = Object.keys(wwdata.network);
+function initializeWebweb() {
+    networkNames = Object.keys(wwdata.networks);
 
-    // move things into "layers" if they're not
-    for (var i in networkNames) {
-        if (wwdata.network[networkNames[i]].layers == undefined) {
-            wwdata.network[networkNames[i]].layers = [
-                {
-                    'adjList' : wwdata.network[networkNames[i]].adjList,
-                    'labels' : wwdata.network[networkNames[i]].labels,
-                }
-            ]
-        }
-    }
-
-    // the default network will be the first one in the list of networks
+    // default the network to display to the first in networks list
     displayDefaults['networkName'] = networkNames[0];
-    displayDefaults['networkLayer'] = 0;
 
     display = wwdata.display;
     for (var key in displayDefaults) {
@@ -127,80 +79,21 @@ function initWebweb() {
         display.freezeNodeMovement = false;
     }
 
-    var title = "webweb";
-    if (display.name !== undefined) {
-        title = title + " - " + display.name;
+    standardizeRepresentation();
+
+    scales = {
+        'nodeSize' : d3.scaleLinear().range([1, 1]),
+        'colors' : {
+            'scalar' : d3.scaleLinear().range([1, 1]),
+            'categorical' : d3.scaleOrdinal().range([1, 1]),
+        },
+        'links' : {
+            'width' : d3.scaleLinear().range([1, 1]),
+            'opacity' : d3.scaleLinear().range([0.4, 0.9]),
+        },
     }
 
-    d3.select("title").text(title);
-
-    scaleSize = d3.scaleLinear().range([1, 1]);
-    scaleColorScalar = d3.scaleLinear().range([1, 1]);
-    scaleColorCategory = d3.scaleOrdinal().range([1, 1]);
-    scaleLink = d3.scaleLinear().range([1, 1]);
-    scaleLinkOpacity = d3.scaleLinear().range([0.4, 0.9]);
-
-    nameToMatch = "";
-
-    // this is sorta weird logic here. what we want to do is possibly hide
-    // everything but the visualization
-    // however, right now the coupling of things makes it such that we need to
-    // generate menus anways.
-    var centerDisplay;
-    var webContainerElement;
-
-    var containerWidth = screen.width;
-    var containerHeight = screen.height;
-
-    if (display.showWebOnly == true) {
-        centerDisplay = 'none';
-
-        webContainerElement = d3.select('body');
-    }
-    else {
-        centerDisplay = 'block';
-        webContainerElement = d3.select('#webweb-chart');
-    }
-
-    if (display.attachWebToElementWithId !== undefined) {
-        webContainerElement = d3.select('#' + display.attachWebToElementWithId);
-
-        rawContainerElement = document.getElementById(display.attachWebToElementWithId);
-
-        containerWidth = rawContainerElement.clientWidth;
-        containerHeight = rawContainerElement.clientHeight;
-    }
-
-    d3.select('#webweb-center')
-        .style('display', centerDisplay)
-
-    webContainerElement.append('div')
-        .attr('id', 'svg_div');
-
-    if (display.w == undefined) {
-        var heuristic = containerWidth - 3 * 20;
-
-        if (heuristic <= 0) {
-            heuristic = 1000;
-        }
-        display.w = Math.min.apply(null, [heuristic, 1000]);
-    }
-
-    if (display.h == undefined) {
-        var heuristic = containerHeight - 3 * 20;
-
-        if (heuristic <= 0) {
-            heuristic = 600;
-        }
-
-        display.h = Math.min.apply(null, [heuristic, 600, display.w]);
-    }
-
-    vis = d3.select("#svg_div")
-        .append("svg")
-        .attr("width", display.w)
-        .attr("height", display.h)
-        .attr("id", "vis");
+    initializeHTML();
 
     computeNodes();
     drawNodes();
@@ -209,24 +102,135 @@ function initWebweb() {
         .force("center", d3.forceCenter(display.w / 2, display.h / 2))
         .on('tick', tick);
 
-    updateChargeForce();
-    updateGravityForce();
+    displayNetwork();
+}
+function initializeHTML() {
+    var container;
+
+    if (display.attachWebwebToElementWithId == undefined) {
+        var container = document.createElement('div')
+        container.setAttribute('id', 'webweb-center');
+
+        document.getElementsByTagName("body")[0].appendChild(container);
+    }
+    else {
+        container = document.getElementById(display.attachWebwebToElementWithId);
+    }
+
+    writeMenus(container);
+    writeVisualization(container);
+}
+function writeVisualization(container) {
+    var visualizationContainer = document.createElement("div");
+    visualizationContainer.setAttribute('id', 'webweb-visualization-container');
+
+    container.appendChild(visualizationContainer);
+
+    if (display.w == undefined) {
+        var heuristic = container.clientWidth - 3 * 20;
+
+        if (heuristic <= 0) {
+            heuristic = 1000;
+        }
+        display.w = Math.min.apply(null, [heuristic, 1000]);
+    }
+
+    if (display.h == undefined) {
+        var heuristic = container.clientHeight - 3 * 20;
+
+        if (heuristic <= 0) {
+            heuristic = 600;
+        }
+
+        display.h = Math.min.apply(null, [heuristic, 600, display.w]);
+    }
+    vis = d3.select("#webweb-visualization-container")
+        .append("svg")
+        .attr("width", display.w)
+        .attr("height", display.h)
+        .attr("id", "vis");
+}
+function standardizeRepresentation() {
+    for (var i in networkNames) {
+        standardizeNetworkRepresentation(networkNames[i]);
+    }
+
+    display.nodes = addMetadataVectorsToNodes(display.metadata, display.nodes);
+}
+function standardizeNetworkRepresentation(networkName) {
+    var network = wwdata.networks[networkName];
+
+    if (network.layers == undefined) {
+        network.layers = [
+            {
+                'edgeList' : network.edgeList,
+                'nodes' : network.nodes,
+                'metadata' : network.metadata,
+            }
+        ];
+    }
+
+    for (var i in network.layers) {
+        network.layers[i] = standardizeLayerRepresentation(network.layers[i]);
+    }
+
+    wwdata.networks[networkName] = network;
+}
+function standardizeLayerRepresentation(layer) {
+    if (layer.metadata !== undefined) {
+        for (var metadatum in layer.metadata) {
+            if (display.metadata[metadatum] == undefined) {
+                display.metadata[metadatum] = {};
+            }
+
+            if (layer.metadata[metadatum].categories !== undefined) {
+                display.metadata[metadatum]['categories'] = layer.metadata[metadatum].categories;
+            }
+
+            if (layer.metadata[metadatum].type !== undefined) {
+                display.metadata[metadatum]['type'] = layer.metadata[metadatum].type;
+
+            }
+
+        }
+
+        layer.nodes = addMetadataVectorsToNodes(layer.metadata, layer.nodes);
+    }
+
+    return layer;
+}
+function addMetadataVectorsToNodes(metadata, nodes) {
+    if (nodes == undefined) {
+        nodes = {};
+    }
+
+    for (var metadatum in metadata) {
+        for (var i in metadata[metadatum].values) {
+            if (nodes[i] == undefined) {
+                nodes[i] = {};
+            }
+        
+            nodes[i][metadatum] = metadata[metadatum].values[i];
+        }
+    }
+
+    return nodes;
 }
 ////////////////////////////////////////////////////////////////////////////////
 // - changes the number of visible nodes
+// - adds metadata to nodes
 // - computes links
 // - draws links
-// - defines labels
 // - uses the force (luke)
 ////////////////////////////////////////////////////////////////////////////////
 function displayNetwork() {
     setVisibleNodes();
-
-    defineLabels();
+    setNodeMetadata();
 
     computeLinks();
     drawLinks();
 
+    updateChargeForce();
     updateLinkForce();
     updateGravityForce();
 
@@ -249,6 +253,7 @@ function displayNetwork() {
     redrawNodes();
     redisplayNodeNames();
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 // adds/removes nodes from the visualization
 //
@@ -256,34 +261,21 @@ function displayNetwork() {
 // however, we would like to be able to do this by name (i.e. id).
 ////////////////////////////////////////////////////////////////////////////////
 function setVisibleNodes() {
-    // have to handle 2 things:
-    // - named nodes
-    // - unnamed nodes
-    //
-    // how?
-    // - after initing, save all nodes in `nodePersistence`, dict:
-    //      - key: index or nodeName (in order of display.nodeNames)
-    //      - values:
-    //          - element: html element
-    //          - graphic: svg element to draw
-    // - if we have nodes:
-    //      - if those nodes are a count:
-    //          - take the keys and spit them to the nodes array
-    //          - draw them
-    //      - if those nodes are a list:
-    //          - read from the dict
-    if ('nodes' in wwdata.network[display.networkName].layers[display.networkLayer]) {
-        var networkNodes = wwdata.network[display.networkName].layers[display.networkLayer].nodes;
-        if (networkNodes < nodes.length) {
-            while (networkNodes != nodes.length) {
+    var networkNodes = wwdata.networks[display.networkName].layers[display.networkLayer].nodes;
+
+    var nodeCount = getObjetPropertyCount(networkNodes);
+
+    if (nodeCount) {
+        if (nodeCount < nodes.length) {
+            while (nodeCount != nodes.length) {
                 var toRemove = nodes.pop();
                 var drawnNode = document.getElementById("node_" + toRemove.idx)
                 document.getElementById("vis").removeChild(drawnNode);
                 nodePersistence.push({ 'node' : toRemove, 'toDraw' : drawnNode });
             }
         }
-        else if (networkNodes > nodes.length) {
-            while (networkNodes != nodes.length) {
+        else if (nodeCount > nodes.length) {
+            while (nodeCount != nodes.length) {
                 var toAdd = nodePersistence.pop();
                 document.getElementById("vis").appendChild(toAdd.toDraw);
                 nodes.push(toAdd.node);
@@ -300,63 +292,141 @@ function setVisibleNodes() {
         }
     }
 }
+function addNodeMetadata(metadata, nodeIdMap) {
+    if (getObjetPropertyCount(metadata) == 0) {
+        return;
+    }
+
+    for (var i in metadata) {
+        for (var metadatum in metadata[i]) {
+            nodes[nodeIdMap[i]][metadatum] = metadata[i][metadatum];
+        }
+    }
+}
+function getNetworkData(networkName, networkLayer) {
+    return wwdata.networks[networkName].layers[networkLayer];
+}
 ////////////////////////////////////////////////////////////////////////////////
-// loads the labels up from the places they could come from:
+// creates a map from observed nodes (nodes in the edge list, display.nodes, and
+// the current layer's nodes) to an internal "id"
+////////////////////////////////////////////////////////////////////////////////
+function getNodeIdMap(networkName, networkLayer) {
+    var networkData = getNetworkData(networkName, networkLayer);
+
+    var nodeNames = [];
+
+    for (var i in networkData.edgeList) {
+        nodeNames.push(networkData.edgeList[i][0]);
+        nodeNames.push(networkData.edgeList[i][1]);
+    }
+
+    if (getObjetPropertyCount(display.nodes) > 0) {
+        for (var i in display.nodes) {
+            var _id = isNaN(i) ? i : +i;
+            nodeNames.push(_id);
+        }
+    }
+
+    if (getObjetPropertyCount(networkData.nodes) > 0) {
+        for (var i in networkData.nodes) {
+            var _id = isNaN(i) ? i : +i;
+            nodeNames.push(_id);
+        }
+    }
+
+    var unusedId = 0;
+    var nodeIdMap = {};
+    for (var i in nodeNames) {
+        var name = nodeNames[i];
+        if (nodeIdMap[name] == undefined) {
+            nodeIdMap[name] = unusedId;
+            unusedId += 1;
+        }
+    }
+
+    return nodeIdMap;
+}
+////////////////////////////////////////////////////////////////////////////////
+// loads the metadata up from the places they could come from:
 // 1. the defaults (none, degree)
 // 2. the display parameters
 // 3. the network itself
 //
-// Priority is given to the network's labels, then display, then defaults
+// Priority is given to the network's metadata, then display, then defaults
 ////////////////////////////////////////////////////////////////////////////////
-function defineLabels() {
-    var allLabels = {
-        'none' : {},
+function setNodeMetadata() {
+    var allMetadata = {
+        'none' : {
+            'type' : 'none',
+        },
         'degree' : {
             'type' : 'scalar',
         },
     };
 
-    if (display.labels !== undefined) {
-        var displayLabels = display.labels;
-        for (var label in displayLabels) {
-            allLabels[label] = displayLabels[label];
+    var nonMetadataKeys = [ 'idx', 'fx', 'fy', 'x', 'y', 'vx', 'vy', 'index', 'degree' ];
 
-            // assign the property to the node values
-            for (var i in nodes) {
-                nodes[i][label] = displayLabels[label].value[i];
+    // reset node data
+    for (var i in nodes) {
+        for (var key in nodes[i]) {
+            if (nonMetadataKeys.indexOf(key) < 0) {
+                delete nodes[i][key];
+            }
+            else if (key == 'degree' || key == 'strength') {
+                // reset the degree and strength (strength not yet supported)
+                nodes[i][key] = 0;
             }
         }
     }
 
-    var networkData = wwdata.network[display.networkName].layers[display.networkLayer];
-    if (networkData !== undefined && networkData.labels !== undefined) {
-        var networkLabels = networkData.labels;
-        for (var label in networkLabels) {
-            allLabels[label] = networkLabels[label];
+    var nodeIdMap = getNodeIdMap(display.networkName, display.networkLayer);
 
-            // assign the property to the node values
-            for (var i in nodes) {
-                nodes[i][label] = networkLabels[label].value[i];
+    addNodeMetadata(display.nodes, nodeIdMap);
+
+    var networkData = wwdata.networks[display.networkName].layers[display.networkLayer];
+    addNodeMetadata(networkData.nodes, nodeIdMap);
+
+    var nodeNameMap = {};
+    for(var key in nodeIdMap){
+        nodeNameMap[nodeIdMap[key]] = key;
+    }
+
+    // now we need to define the set of metadata
+    for (var i in nodes) {
+        var node = nodes[i];
+        for (var key in node) {
+            if (nonMetadataKeys.indexOf(key) < 0) {
+                allMetadata[key] = {};
+
+                if (display.metadata !== undefined && display.metadata[key] !== undefined) {
+                    // if we have categories, change the node values here
+                    if (display.metadata[key].categories !== undefined) {
+                        var nodeCategoryNumber = nodes[i][key];
+                        nodes[i][key] = display.metadata[key].categories[nodeCategoryNumber];
+
+                    }
+                }
             }
+        }
+
+        // if we don't already have node names, use the mapping to assign them
+        if (nodes[i]['name'] == undefined && nodeNameMap !== undefined) {
+            nodes[i]['name'] = nodeNameMap[nodes[i].idx]
         }
     }
 
-    sizeData.labels = {};
-    colorData.labels = {};
-    for (label in allLabels) {
-        if (label == "name") {
-            continue;
+    sizeData.metadata = {};
+    colorData.metadata = {};
+    for (metadatum in allMetadata) {
+        if (allMetadata[metadatum].type == undefined) {
+            allMetadata[metadatum].type = getMetadatumType(metadatum);
         }
 
-        if (allLabels[label].type == undefined) {
-            allLabels[label].type = getLabelType(allLabels[label])
-        }
-
-        if (allLabels[label].type !== "categorical") {
-            sizeData.labels[label] = allLabels[label];
+        if (allMetadata[metadatum].type !== "categorical") {
+            sizeData.metadata[metadatum] = allMetadata[metadatum];
 
         }
-        colorData.labels[label] = allLabels[label];
+        colorData.metadata[metadatum] = allMetadata[metadatum];
     }
 
     // these below if statements are only here because of poor design (says
@@ -364,34 +434,39 @@ function defineLabels() {
     // really, computeSizes and computeColors should already have this
     // information.
     if (display.colorBy !== undefined && display.colorBy !== 'none') {
-        if (allLabels !== undefined && allLabels[display.colorBy] == undefined) {
+        if (allMetadata !== undefined && allMetadata[display.colorBy] == undefined) {
             display.colorBy = 'none';
         }
 
-        colorData.type = allLabels[display.colorBy].type;
+        colorData.type = allMetadata[display.colorBy].type;
     }
 
     if (display.sizeBy !== undefined && display.sizeBy !== 'none') {
-        if (allLabels !== undefined && allLabels[display.sizeBy] == undefined) {
+        if (allMetadata !== undefined && allMetadata[display.sizeBy] == undefined) {
             display.sizeBy = 'none';
         }
 
-        sizeData.type = allLabels[display.sizeBy].type;
+        sizeData.type = allMetadata[display.sizeBy].type;
     }
 
-    // update the menus with these new labels
+    // update the menus with these new metadata
     updateSizeMenu();
     updateColorMenu();
 }
 ////////////////////////////////////////////////////////////////////////////////
-// tries to figure out the label type of a given label.
+// tries to figure out the metadatum type of a given metadatum.
 ////////////////////////////////////////////////////////////////////////////////
-function getLabelType(label) {
-    if (label.categories !== undefined) {
-        return 'categorical';
+function getMetadatumType(metadatum) {
+    if (metadatum == 'none') {
+        return;
     }
 
-    var q = d3.set(label.value).values().sort();
+    var metadatumValues = [];
+    for (var i in nodes) {
+        metadatumValues.push(nodes[i][metadatum]);
+    }
+    
+    var q = d3.set(metadatumValues).values().sort();
 
     // check if this is a binary relation
     if (q.length == 2 && q[0] == 'false' && q[1] == 'true') {
@@ -403,45 +478,31 @@ function getLabelType(label) {
     else if (q.some(isNaN)) {
         return 'categorical';
     }
-    else if (label !== 'none') {
-        return 'scalar';
-    }
+
+    return 'scalar';
 }
 ////////////////////////////////////////////////////////////////////////////////
 // initialize the nodes (attempting to be smart about the number of them)
 ////////////////////////////////////////////////////////////////////////////////
 function computeNodes() {
-    if (display.N == undefined) {
-        var nodeCounts = [];
-
-        // if we don't have a node count, try to find one;
-        // - make sets of each network's adjacency list and take the length
-        // - take the length of nodeNames, if present
-        for (var i in networkNames) {
-            var networkNodes = [];
-            var networkName = networkNames[i];
-
-            var adj = d3.values(wwdata.network[networkName].layers[display.networkLayer].adjList);
-            for (i in adj) {
-                var edge = adj[i];
-                networkNodes.push(edge[0]);
-                networkNodes.push(edge[1]);
-            }
-            nodeCounts.push(d3.set(networkNodes).values().length);
-
-            var networkLayers = wwdata.network[networkName].layers;
-            for (var j in networkLayers) {
-                if (networkLayers[j].nodes !== undefined) {
-                    nodeCounts.push(networkLayers[j].nodes);
-                }
-            }
+    // iterate through the networks and get their node counts
+    var nodeCounts = [];
+    for (var i in networkNames) {
+        var networkName = networkNames[i];
+        var network = wwdata.networks[networkName];
+        for (var layer in network.layers) {
+            var nodeIdMap = getNodeIdMap(networkName, layer);
+            var count = getObjetPropertyCount(nodeIdMap);
+            nodeCounts.push(count);
         }
+    }
 
-        if (display.nodeNames !== undefined) {
-            nodeCounts.push(display.nodeNames.length);
-        }
+    var maxObservedNodeCount = d3.max(nodeCounts);
 
-        display.N = d3.max(nodeCounts);
+    // if display.N is undefined, or if it is less than the max number of nodes
+    // we've observed, set it to the max observed
+    if (display.N == undefined || display.N < maxObservedNodeCount) {
+        display.N = maxObservedNodeCount;
     }
 
     // Define nodes
@@ -450,11 +511,13 @@ function computeNodes() {
         nodes.push({
             "idx" : i,
             "degree" : 0,
-            "name" : display.nodeNames !== undefined ? display.nodeNames[i] : undefined,
             "x" : display.nodeCoordinates !== undefined ? display.nodeCoordinates[i].x : undefined,
             "y" : display.nodeCoordinates !== undefined ? display.nodeCoordinates[i].y : undefined,
         });
     }
+}
+function getCurrentNetworkLayer() {
+    return wwdata.networks[display.networkName].layers[display.networkLayer];
 }
 ////////////////////////////////////////////////////////////////////////////////
 // initialize links/edges
@@ -465,39 +528,12 @@ function computeNodes() {
 function computeLinks() {
     links = [];
 
-    // get the adjacencies
-    var adj = d3.values(wwdata.network[display.networkName].layers[display.networkLayer].adjList);
-
-    var nodeIdsMap = {};
-
-    // construct a mapping from node ids to our own "id"
-    if (wwdata.network[display.networkName].layers[display.networkLayer].nodes == undefined) {
-        var unused_id = 0;
-        for (var i in adj) {
-            var rawNodes = [adj[i][0], adj[i][1]];
-
-            for (var j in rawNodes) {
-                var rawNode = rawNodes[j];
-                if (nodeIdsMap[rawNode] == undefined) {
-                    nodeIdsMap[rawNode] = unused_id;
-                    unused_id += 1;
-                }
-            }
-        }
-    }
-    else {
-        var numberOfNodes = wwdata.network[display.networkName].layers[display.networkLayer].nodes;
-
-        // otherwise just trust the edges
-        for (var i = 0; i < numberOfNodes; i++) {
-            nodeIdsMap[i] = i;
-        }
-    }
+    var nodeIdMap = getNodeIdMap(display.networkName, display.networkLayer);
 
     // make a matrix so edges between nodes can only occur once
     var matrix = {}
-    for (var i in nodeIdsMap) {
-        matrix[nodeIdsMap[i]] = {};
+    for (var i in nodeIdMap) {
+        matrix[nodeIdMap[i]] = {};
     }
 
     // reset the node degrees
@@ -505,12 +541,14 @@ function computeLinks() {
         nodes[i].degree = 0;
     }
 
+    var networkData = getNetworkData(display.networkName, display.networkLayer);
+
     // push all the links to the list: links
     var weights = [];
-    for (var i in adj) {
-        var edge = adj[i];
-        var source = nodeIdsMap[edge[0]];
-        var target = nodeIdsMap[edge[1]];
+    for (var i in networkData.edgeList) {
+        var edge = networkData.edgeList[i];
+        var source = nodeIdMap[edge[0]];
+        var target = nodeIdMap[edge[1]];
 
         // if there's no edge weight, default it to 1
         var weight = edge.length == 3 ? parseFloat(edge[2]) : 1;
@@ -531,11 +569,11 @@ function computeLinks() {
             nodes[target].degree += weight;
         }
     }
-    
+
     // scale the link weight and opacity by computing the range (extent) of the
-    // adj weights.
-    scaleLink.domain(d3.extent(weights));
-    scaleLinkOpacity.domain(d3.extent(weights));
+    // edgeList weights.
+    scales.links.width.domain(d3.extent(weights));
+    scales.links.opacity.domain(d3.extent(weights));
 
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -561,15 +599,10 @@ function computeSizes() {
         }
     }
     else {
-        var label = sizeData.labels[display.sizeBy];
-        sizeData.type = label.type;
+        var metadatum = sizeData.metadata[display.sizeBy];
+        sizeData.type = metadatum.type;
 
-        if (sizeData.type == 'binary') {
-            changeInvertBinaryWidgetVisibility(true, 'size');
-        }
-
-        rawValues = getRawNodeValues(display.sizeBy, label.type, 'size');
-
+        rawValues = getRawNodeValues(display.sizeBy, metadatum.type, 'size');
         for (var i in nodes) {
             scaledValues[i] = rawValues[i];
             // if we're sizing by degree, square root the value
@@ -578,9 +611,19 @@ function computeSizes() {
             }
         }
 
-        scaleSize.domain(d3.extent(scaledValues), d3.max(scaledValues)).range([0.5, 1.5]);
+        if (sizeData.type == 'binary') {
+            changeInvertBinaryWidgetVisibility(true, 'size');
+
+            // scale between true and false even if we only have one of
+            // the two values
+            scales.nodeSize.domain(d3.extent([true, false])).range([0.5, 1.5]);
+        }
+        else {
+            scales.nodeSize.domain(d3.extent(scaledValues), d3.max(scaledValues)).range([0.5, 1.5]);
+        }
+
         for (var i in scaledValues) {
-            scaledValues[i] = scaleSize(scaledValues[i]);
+            scaledValues[i] = scales.nodeSize(scaledValues[i]);
         }
     }
 
@@ -609,10 +652,10 @@ function computeColors() {
         return
     }
 
-    var label = colorData.labels[display.colorBy];
-    colorData.type = label.type;
+    var metadatum = colorData.metadata[display.colorBy];
+    colorData.type = metadatum.type;
 
-    var rawValues = getRawNodeValues(display.colorBy, label.type, 'color');
+    var rawValues = getRawNodeValues(display.colorBy, metadatum.type, 'color');
 
     categoryValues = [];
 
@@ -625,15 +668,15 @@ function computeColors() {
         colorData['categoryNames'] = [];
 
         // if we don't have categories, retrieve them as scalars from the
-        // values for the label
-        if (label.categories == undefined) {
+        // values for the metadatum
+        if (metadatum.categories == undefined) {
             colorData['categoryNames'] = d3.set(rawValues).values().sort();
             categoryValues = colorData['categoryNames'];
         }
         else {
-            colorData['categoryNames'] = label.categories;
+            colorData['categoryNames'] = metadatum.categories;
 
-            // Check to see if our categories are numeric or labels
+            // Check to see if our categories are numeric or not
             if (isNaN(d3.quantile(rawValues, 0.25))) {
                 categoryValues = colorData['categoryNames'].sort();
             }
@@ -652,7 +695,7 @@ function computeColors() {
         // colorbrewer
         // update the list for this...
         if (categoryValues.length <= 9) {
-            scaleColorCategory.domain(categoryValues)
+            scales.colors.categorical.domain(categoryValues)
                 .range(colorbrewer[display.colorPalette][categoryValues.length]);
 
             changeColorPaletteMenuVisibility(true);
@@ -675,7 +718,7 @@ function computeColors() {
     }
 
     if (colorData.type != 'categorical') {
-        scaleColorScalar.domain(d3.extent(rawValues)).range([0,1]);
+        scales.colors.scalar.domain(d3.extent(rawValues)).range([0,1]);
     }
 
     var scaledValues = [];
@@ -690,16 +733,16 @@ function computeColors() {
 }
 ////////////////////////////////////////////////////////////////////////////////
 // returns raw values for:
-// - a labelName
-// - a labelType
+// - a metadatumName
+// - a metadatumType
 // - a displayType (color/size)
 ////////////////////////////////////////////////////////////////////////////////
-function getRawNodeValues(labelName, labelType, displayType) {
+function getRawNodeValues(metadatumName, metadatumType, displayType) {
     var rawValues = [];
     for (var i in nodes){
-        var val = nodes[i][labelName];
+        var val = nodes[i][metadatumName];
 
-        if (labelType == 'binary') {
+        if (metadatumType == 'binary') {
             val = getBinaryValue(val, displayType);
         }
 
@@ -708,19 +751,19 @@ function getRawNodeValues(labelName, labelType, displayType) {
 
     return rawValues;
 }
-// ColorWheel is a function that takes a node label, like a category or scalar
+// ColorWheel is a function that takes a node metadatum, like a category or scalar
 // and just gets the damn color. But it has to take into account what the 
 // current colorData.type is. Basically, this is trying to apply our prefs to colors
 function colorWheel(x) {
     if (colorData.type == "categorical") {
-        return scaleColorCategory(x);
+        return scales.colors.categorical(x);
     }
     else if (colorData.type == 'binary') {
-        return scaleColorCategory(getBinaryValue(x, 'color'));
+        return scales.colors.categorical(getBinaryValue(x, 'color'));
     }
     else {
         // Rainbow HSL
-        return d3.hsl(210 * (1 - scaleColorScalar(x)), 0.7, 0.5);
+        return d3.hsl(210 * (1 - scales.colors.scalar(x)), 0.7, 0.5);
         // Greyscale
         // return [0.8*255*x,0.8*255*x,0.8*255*x];
         // Copper
@@ -748,8 +791,8 @@ function changeSizes(sizeBy) {
     computeSizes();
     computeLegend();
     redrawNodes();
-    if (nameToMatch != "") {
-        matchNodes(nameToMatch);
+    if (display.nameToMatch != "") {
+        matchNodes(display.nameToMatch);
     };
 }
 function changeColors(colorBy) {
@@ -757,8 +800,8 @@ function changeColors(colorBy) {
     computeColors();
     computeLegend();
     redrawNodes();
-    if (nameToMatch != "") {
-        matchNodes(nameToMatch);
+    if (display.nameToMatch != "") {
+        matchNodes(display.nameToMatch);
     };
 }
 function setColorPalette(colorPalette) {
@@ -903,24 +946,24 @@ function updateLinkForce() {
 }
 function toggleLinkWidthScaling(checked) {
     if (checked) {
-        scaleLink.range([0.5, 4]);
+        scales.links.width.range([0.5, 4]);
     }
     else {
-        scaleLink.range([1, 1]);
+        scales.links.width.range([1, 1]);
     }
     redrawLinks();
 }
 function toggleLinkOpacity(checked) {
     if (checked) {
-        scaleLinkOpacity.range([0.4, 0.9])
+        scales.links.opacity.range([0.4, 0.9])
     }
     else {
-        scaleLinkOpacity.range([1, 1]);
+        scales.links.opacity.range([1, 1]);
     }
     redrawLinks();
 }
 function matchNodes(x) {
-    nameToMatch = x;
+    display.nameToMatch = x;
     if (x.length == 0){
         nodes.forEach(function(d) {
             unHighlightNode(d);
@@ -928,7 +971,7 @@ function matchNodes(x) {
     }
     else {
         nodes.forEach(function(d) {
-            if (d.name.indexOf(nameToMatch) < 0) {
+            if (d.name.indexOf(display.nameToMatch) < 0) {
                 unHighlightNode(d);
             }
             else {
@@ -1046,7 +1089,7 @@ function makeColorLegend() {
     }
 
     if (colorData.type == "categorical") {
-        legend['values'] = scaleColorCategory.domain();
+        legend['values'] = scales.colors.categorical.domain();
         legend['text'] = d3.values(colorData['categoryNames']);
     }
     else if (colorData.type == "binary") {
@@ -1089,7 +1132,7 @@ function makeSizeLegend() {
     }
 
     for (var i in legend['values']) {
-        legend['values'][i] = scaleSize(scaleFunction(legend['values'][i]));
+        legend['values'][i] = scales.nodeSize(scaleFunction(legend['values'][i]));
     }
 
     sizeData['R'] = display.r * d3.max(legend['values']);
@@ -1172,11 +1215,11 @@ function drawLinks() {
                 return 0;
             }
             else {
-                return scaleLink(d.w)
+                return scales.links.width(d.w)
             }
         })
         .style("stroke-opacity", function(d) {
-            return scaleLinkOpacity(d.w)
+            return scales.links.opacity(d.w)
         });
 
     link.exit().remove();
@@ -1190,11 +1233,11 @@ function redrawLinks() {
                     return 0;
                 }
                 else {
-                    return scaleLink(d.w);
+                    return scales.links.width(d.w);
                 }
             })
             .style("stroke-opacity", function(d) {
-                return scaleLinkOpacity(d.w)
+                return scales.links.opacity(d.w)
             });
     })
 }
@@ -1307,7 +1350,7 @@ function highlightNode(d) {
 }
 // Returns a node's highlighted size and stroke to normal
 function unHighlightNode(d) {
-    if (nameToMatch == "" || d.name.indexOf(nameToMatch) < 0) {
+    if (display.nameToMatch == "" || d.name.indexOf(display.nameToMatch) < 0) {
         d3.select("#node_" + d.idx)
             .transition()
             .attr("r", sizeData['scaledValues'][d.idx] * display.r)
@@ -1317,14 +1360,7 @@ function unHighlightNode(d) {
 // Highlight a node by showing its name next to it.
 // If the node has no name, show its index.  
 function showNodeText(d) {
-    var nodeName = "node";
-    var nodeId = d.idx;
-    if (d.name !== undefined) {
-        nodeName = d.name;
-        nodeId = "(" + nodeId + ")";
-    }
-
-    var nodeTextString = nodeName + " " + nodeId;
+    var nodeTextString = d.name == undefined ? d.idx : d.name;
 
     vis.append("text").text(nodeTextString)
         .attr("x", d.x + 1.5 * display.r)
@@ -1392,7 +1428,6 @@ function writeFreezeNodesToggle(parent) {
         .attr("id", "freezeNodesToggle")
         .attr("type", "checkbox")
         .attr("onchange", "toggleFreezeNodes(this.checked)");
-
 }
 function writeSaveButtons(parent) {
     var saveButtons = parent.append("div")
@@ -1403,33 +1438,6 @@ function writeSaveButtons(parent) {
         .attr("type", "button")
         .attr("value", "Save SVG")
         .on("click", writeSVGDownloadLink);
-
-    saveButtons.append("input")
-        .attr("id", "saveJSONButton")
-        .attr("type", "button")
-        .attr("value", "Save webweb")
-        .on("click", writeWebwebDownloadLink);
-}
-function writeDropJSONArea() {
-    // Setup the dnd listeners.
-    var dropZone = document.getElementsByTagName("BODY")[0];
-    dropZone.addEventListener('dragover', handleDragOver, false);
-    dropZone.addEventListener('drop', readJSONDrop, false);
-}
-function writeLoadJSONButton(parent) {
-    var loadJSONButton = parent.append("div")
-        .attr("id","loadJSONButton")
-        .text("Load JSON");
-
-    loadJSONButton.append("input")
-        .attr("type", "file")
-        .attr("id", "json_files")
-        .attr("name", "uploadJSON")
-        .attr("accept", ".json")
-        .on("change", function(evt) {
-            var evt = d3.event;
-            readJSON();
-        });
 }
 function writeNetworkMenu(parent) {
     var networkMenu = parent.append("div")
@@ -1439,16 +1447,9 @@ function writeNetworkMenu(parent) {
         .attr("id", "networkSelectMenu")
         .text("Display data from ");
 
-    networkSelectMenu.append("select")
+    var networkSelect = networkSelectMenu.append("select")
         .attr("id", "networkSelect")
         .attr("onchange", "updateNetwork(this.value)")
-
-    writeNetworkLayerMenu(networkMenu);
-}
-function updateNetworkSelectMenu() {
-    var networkSelect = d3.select("#networkSelect");
-
-    networkSelect.selectAll("option").remove();
 
     networkSelect.selectAll("option")
         .data(networkNames)
@@ -1459,7 +1460,8 @@ function updateNetworkSelectMenu() {
 
     networkSelect = document.getElementById('networkSelect');
     networkSelect.value = display.networkName;
-    updateNetworkLayerSelect();
+
+    writeNetworkLayerMenu(networkMenu);
 }
 function writeSizeMenu(parent) {
     var sizeMenu = parent.append("div")
@@ -1474,7 +1476,7 @@ function writeSizeMenu(parent) {
 }
 function setNetworkLayerMenuVisibility() {
     var visible;
-    if (wwdata.network[display.networkName].layers.length == 1) {
+    if (wwdata.networks[display.networkName].layers.length == 1) {
         visible = false;
     }
     else {
@@ -1491,7 +1493,7 @@ function writeNetworkLayerMenu(parent) {
         .text(" layer: ");
 
     var layers = [];
-    for (var i in wwdata.network[display.networkName].layers) {
+    for (var i in wwdata.networks[display.networkName].layers) {
         layers.push(i);
     }
 
@@ -1520,19 +1522,19 @@ function updateSizeMenu() {
 
     sizeSelect.selectAll("option").remove();
 
-    var sizeLabelStrings = [];
-    for (var label in sizeData.labels) {
-        sizeLabelStrings.push(label);
+    var sizeMetadataStrings = [];
+    for (var metadatum in sizeData.metadata) {
+        sizeMetadataStrings.push(metadatum);
     }
 
     sizeSelect.selectAll("option")
-        .data(sizeLabelStrings)
+        .data(sizeMetadataStrings)
         .enter()
         .append("option")
         .attr("value", function(d) { return d; })
         .text(function(d) { return d; });
 
-    if (display.sizeBy == undefined || sizeData.labels[display.sizeBy] == undefined) {
+    if (display.sizeBy == undefined || sizeData.metadata[display.sizeBy] == undefined) {
         display.sizeBy = "none";
     }
 
@@ -1594,19 +1596,19 @@ function updateColorMenu() {
 
     colorSelect.selectAll("option").remove();
 
-    var colorLabelStrings = [];
-    for (var label in colorData.labels) {
-        colorLabelStrings.push(label);
+    var colorMetadataStrings = [];
+    for (var metadatum in colorData.metadata) {
+        colorMetadataStrings.push(metadatum);
     }
 
     colorSelect.selectAll("option")
-        .data(colorLabelStrings)
+        .data(colorMetadataStrings)
         .enter()
         .append("option")
         .attr("value",function(d){return d;})
         .text(function(d){return d;});
 
-    if (display.colorBy == undefined || colorData.labels[display.colorBy] == undefined) {
+    if (display.colorBy == undefined || colorData.metadata[display.colorBy] == undefined) {
         display.colorBy = "none";
     }
 
@@ -1738,14 +1740,19 @@ function writeShowNodeNamesWidget(parent) {
         .attr("onchange", "toggleShowNodeNames(this.checked)")
         .attr("size", 3);
 }
-function writeMenus(menu) {
+function writeMenus(container) {
+    var menu = document.createElement('div')
+    menu.setAttribute('id', 'webweb-menu')
+    menu.style.display = display.hideMenu !== undefined ? 'none' : 'block';
+    container.appendChild(menu);
+
+    var menu = d3.select('#webweb-menu');
+
     var leftMenu = menu.append("div")
-        .attr("id", "leftMenu")
-        .attr("class", "webweb-menu-left");
+        .attr("id", "webweb-menu-left");
 
     var rightMenu = menu.append("div")
-        .attr("id", "rightMenu")
-        .attr("class", "webweb-menu-right");
+        .attr("id", "webweb-menu-right");
 
     writeNetworkMenu(leftMenu);
     writeSizeMenu(leftMenu);
@@ -1754,9 +1761,6 @@ function writeMenus(menu) {
     writeScaleLinkOpacityToggle(leftMenu);
     writeFreezeNodesToggle(leftMenu);
     writeSaveButtons(leftMenu);
-    writeDropJSONArea(leftMenu);
-    // Implemented by Mike Iuzzolino, disabled by DBL for cleanliness
-    // writeLoadJSONButton();
 
     writeChargeWidget(rightMenu);
     writeLinkLengthWidget(rightMenu);
@@ -1765,8 +1769,6 @@ function writeMenus(menu) {
     writeRadiusWidget(rightMenu);
     writeMatchWidget(rightMenu);
     writeShowNodeNamesWidget(rightMenu);
-
-    updateNetworkSelectMenu();
 }
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -1777,51 +1779,6 @@ function writeMenus(menu) {
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-function handleDragOver(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-}
-// This prepares to read in a json file if you drop it. 
-// It calls readJSON, which is below.
-function readJSONDrop(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-
-    // FileList object.
-    var files = evt.dataTransfer.files;
-
-    readJSON(files);
-}
-// Theoretically, multiple files could have been dropped above.
-// Those files are passed into readJSON
-// Only the first file is used. 
-function readJSON(files) {
-    var file;
-
-    if (files === undefined) {
-        files = document.getElementById('json_files').files;
-    }
-    file = files[0];
-
-    var start = 0;
-    var stop = file.size - 1;
-
-    var reader = new FileReader();
-
-    // If we use onloadend, we need to check the readyState.
-    reader.onloadend = function(evt) {
-        if (evt.target.readyState == FileReader.DONE) {
-            var json_string = evt.target.result;
-            json_string = json_string.replace("var wwdata = ", "");
-            wwdata = JSON.parse(json_string);
-            updateVis(wwdata);
-        }
-    };
-
-    var blob = file.slice(start, stop + 1);
-    reader.readAsBinaryString(blob);
-}
 // it's crazy, this function right here, it saves: it
 function saveIt(fileName, fileType, content) {
     try {
@@ -1841,22 +1798,6 @@ function writeSVGDownloadLink() {
 
     saveIt(display.networkName, "image/svg+xml", html);
 };
-function writeWebwebDownloadLink() {
-    var webwebJSON = wwdata;
-    webwebJSON.display = display;
-
-    // save node coordinates
-    var nodeCoordinates = [];
-    node.attr("cx", function(d) {
-        nodeCoordinates.push({'x' : d.x, 'y' : d.y });
-        return d.x;
-    })
-
-    webwebJSON.display.nodeCoordinates = nodeCoordinates;
-
-    saveIt('webweb.json', 'json', JSON.stringify(webwebJSON));
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -1889,6 +1830,15 @@ function allInts(vals) {
     }
 
     return true;
+}
+function getObjetPropertyCount(_object) {
+    var count = 0;
+    for(var property in _object) {
+        if (_object.hasOwnProperty(property)) {
+            count += 1;
+        }
+    }
+    return count;
 }
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -1935,7 +1885,7 @@ function changeNetworkLayerListener(event) {
     }
 
     if (changeToLayer !== undefined) {
-        if (0 <= changeToLayer && changeToLayer < wwdata.network[display.networkName].layers.length) {
+        if (0 <= changeToLayer && changeToLayer < wwdata.networks[display.networkName].layers.length) {
             displayNetworkLayer(changeToLayer);
             updateNetworkLayerSelect();
         }
@@ -1951,7 +1901,7 @@ function changeNetworkLayerListener(event) {
 //
 ////////////////////////////////////////////////////////////////////////////////
 window.onload = function() {
-    initializeVis();
+    initializeWebweb();
 };
 window.addEventListener("keydown", function (event) {
     listeners = {

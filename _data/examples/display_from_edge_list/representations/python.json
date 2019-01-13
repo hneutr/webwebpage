@@ -1,0 +1,13 @@
+[
+    "from webweb import Web\n",
+    "\n",
+    "# make a list of unweighted edges\n",
+    "# (nodes can be numbers or strings)\n",
+    "edge_list = [[0, 1], [1, 2], [2, 3]]\n",
+    "\n",
+    "# create the web\n",
+    "web = Web(edge_list)\n",
+    "\n",
+    "# open the browser with the result\n",
+    "web.draw()"
+]

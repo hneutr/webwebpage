@@ -1,0 +1,16 @@
+[
+    "from webweb import Web\n",
+    "import networkx as nx\n",
+    "\n",
+    "G = nx.Graph()\n",
+    "G.add_edges_from([[0, 1, {'weight' : .1}], [1, 2, {'weight' : .5}], [2, 3, {'weight' : 1}], [3, 4, {'weight' : 2}]])\n",
+    "\n",
+    "# create the web\n",
+    "web = Web(nx_G=G)\n",
+    "\n",
+    "# scale edge widths by weight so we can see a visual difference\n",
+    "web.display.scaleLinkWidth = True\n",
+    "\n",
+    "# open the browser with the result\n",
+    "web.draw()"
+]

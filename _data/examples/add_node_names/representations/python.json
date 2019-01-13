@@ -1,0 +1,22 @@
+[
+    "from webweb import Web\n",
+    "\n",
+    "web = Web(\n",
+    "    adjacency=[[0, 1], [1, 2]],\n",
+    "    display={\n",
+    "        'nodes' : {\n",
+    "            0 : {\n",
+    "                'name' : 'Huberg',\n",
+    "            },\n",
+    "            1 : {\n",
+    "                'name' : 'Pierot',\n",
+    "            },\n",
+    "            2 : {\n",
+    "                'name' : 'Slartibertfast',\n",
+    "            },\n",
+    "        },\n",
+    "    },\n",
+    ")\n",
+    "\n",
+    "web.draw()"
+]

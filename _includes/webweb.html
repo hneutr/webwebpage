@@ -4,12 +4,12 @@
 <script type="text/javascript" src="{{ "/assets/js/webweb/d3.v5.min.js" | absolute_url }}"></script>
 <script type="text/javascript" src="{{ "/assets/js/webweb/FileSaver.min.js" | absolute_url }}"></script>
 
-<div id='webweb-example-visualization' style='width: 100%'></div>
+<div id='example-visualization' style='width: 100%'></div>
 <script type="text/javascript">
     var wwdata = {{include.webweb_json | jsonify }};
-    wwdata.display.showWebOnly = true;
-    wwdata.display.attachWebToElementWithId = "webweb-example-visualization";
-    wwdata.display.w = undefined;
-    wwdata.display.h = undefined;
+    wwdata.display.attachWebwebToElementWithId = "example-visualization";
+    wwdata.display.w = 200;
+    wwdata.display.h = 200;
 </script>
+<br>
 <script type="text/javascript" src="{{ "/assets/js/webweb/webweb.v5.js" | absolute_url }}"></script>

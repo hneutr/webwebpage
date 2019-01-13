@@ -1,0 +1,20 @@
+[
+    "from webweb import Web\n",
+    "\n",
+    "adjacency_matrix = [\n",
+    "    [0, .1, 0, 0, 0],\n",
+    "    [.1, 0, .5, 0, 0],\n",
+    "    [0, .5, 0, 1, 0],\n",
+    "    [0, 0, 1, 0, 2],\n",
+    "    [0, 0, 0, 2, 0],\n",
+    "]\n",
+    "\n",
+    "# create the web\n",
+    "web = Web(adjacency_matrix)\n",
+    "\n",
+    "# we'll scale edge widths by weight to create a visual difference\n",
+    "web.display.scaleLinkWidth = True\n",
+    "\n",
+    "# open the browser with the result\n",
+    "web.draw()"
+]

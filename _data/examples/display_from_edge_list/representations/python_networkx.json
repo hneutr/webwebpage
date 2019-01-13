@@ -1,0 +1,13 @@
+[
+    "from webweb import Web\n",
+    "import networkx as nx\n",
+    "\n",
+    "G = nx.Graph()\n",
+    "G.add_edges_from([[0,1], [1, 2], [2, 3]])\n",
+    "\n",
+    "# create the web\n",
+    "web = Web(nx_G=G)\n",
+    "\n",
+    "# open the browser with the result\n",
+    "web.draw()"
+]

@@ -1,0 +1,47 @@
+{
+    "display": {
+        "nodes": {
+            "Brian": {
+                "wearsGlasses": true
+            },
+            "Carl": {
+                "wearsGlasses": false
+            },
+            "Dan": {
+                "wearsGlasses": true
+            },
+            "Hunter": {
+                "wearsGlasses": true
+            }
+        },
+        "sizeBy": "wearsGlasses"
+    },
+    "networks": {
+        "webweb": {
+            "layers": [
+                {
+                    "edgeList": [
+                        [
+                            "Dan",
+                            "Hunter"
+                        ],
+                        [
+                            "Brian",
+                            "Hunter"
+                        ],
+                        [
+                            "Carl",
+                            "Hunter"
+                        ],
+                        [
+                            "Carl",
+                            "Brian"
+                        ]
+                    ],
+                    "metadata": null,
+                    "nodes": null
+                }
+            ]
+        }
+    }
+}

@@ -18,8 +18,9 @@ def clean_dir(directory):
             shutil.rmtree(thing_path)
 
 class Page(object):
-    def __init__(self, title, has_children=False, parent=None, content=None, layout='main_page', permalink=None, nav_order=1, grand_parent=None):
+    def __init__(self, title, writeable_title='', has_children=False, parent=None, content=None, layout='main_page', permalink=None, nav_order=1, grand_parent=None):
         self.title = title
+        self.writeable_title = writeable_title
         self.has_children = has_children
         self.parent = parent
         self.content = content
@@ -33,13 +34,13 @@ class Page(object):
         content = {
             'title' : self.title,
             'layout' : self.layout,
-            'nav_order' : self.nav_order,
+            'nav_order' : int(self.nav_order),
         }
 
         if self.parent:
             content['parent'] = self.parent
 
-        if self.parent:
+        if self.grand_parent:
             content['grand_parent'] = self.grand_parent
 
         if self.permalink:
@@ -51,7 +52,7 @@ class Page(object):
         return content
 
     def write(self, output_dir):
-        path = os.path.join(output_dir, self.title.replace('_', ' ') + '.md')
+        path = os.path.join(output_dir, self.writeable_title + '.md')
 
         to_write = [
             '---',

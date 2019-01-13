@@ -5,13 +5,28 @@ layout: home
 permalink: /
 
 ---
+
 # webweb!
 
-webweb is a tool for displaying interactive network visualizations on the web! It's designed to make showing and sharing networks as easy as possible.
-
-It's mostly written in javascript (making heavy use of [d3js](d3js.org)), and has interfaces for [MATLAB](http://danlarremore.com/webweb/) and [python](https://github.com/hneutr/webweb).
+a tool for creating, displaying, and sharing interactive network visualizations on the web designed for simplicity and ease of use.
 
 {% include webweb.html webweb_json=site.data.infinite_jest %}
+
+## features
+
+- draws simple graphs
+- can handle multiple networks
+- supports layered networks (e.g., networks that change in time)
+- creates a single file without dependencies for easy sharing
+- embeddable
+- language support for [MATLAB](http://danlarremore.com/webweb/) and [python](https://github.com/hneutr/webweb), as well as [networkx](http://networkx.github.io/)
+
+It's mostly written in javascript (making heavy use of [d3js](d3js.org)).
+
+---
+
+## Why though?
+Sometimes, you need to see a network _right now_ -- You don't want to finagle 400 libraries or debug, you just want to see it. Right. Now. Enter webweb.
 
 ---
 
@@ -19,24 +34,17 @@ It's mostly written in javascript (making heavy use of [d3js](d3js.org)), and ha
 
 <p></p>
 
-{%- capture code_options -%}
-python---matlab
-{%- endcapture -%}
-
-{% include code_switcher.html code_options=code_options %}
+{% include code_switcher.html code_options="python---matlab" %}
 
 <div id='python-code-block' class='select-code-block select-code-block-visible'></div>
 ```python
-from webweb.webweb import webweb
-
-# Instantiate webweb object
-web = webweb()
+from webweb import Web
 
 # Connect two nodes
-adjacency_list = [[0, 1]]
+edge_list = [[0, 1]]
 
-# Assign adjaceny lists in network
-web.networks.my_network.add_layer(adjaceny_list)
+# Instantiate webweb object
+web = Web(edge_list)
 
 # Launch webbrowser with result
 web.draw()
@@ -53,9 +61,13 @@ webweb(A);
 
 ## How do I install it?
 
-xxx
----
-
-## Why though?
-Sometimes, you just want to _see_ your adjacency list! You don't want to finagle with 400 libraries and debug, you just want to see it. Enter webweb.
+{% include code_switcher.html code_options="python---matlab" %}
+<div id='python-code-block' class='select-code-block select-code-block-visible'></div>
+```python
+pip install webweb
+```
+<div id='matlab-code-block' class='select-code-block'></div>
+```matlab
+git clone //https://github.com/dblarremore/webweb
+```
 

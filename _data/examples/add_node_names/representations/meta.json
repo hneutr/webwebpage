@@ -1,0 +1,11 @@
+[
+    "---\n",
+    "nav_order: 5\n",
+    "name: add node names\n",
+    "\n",
+    "---\n",
+    "\n",
+    "we can add node names by setting the `nodes` attribute in the `display` variable\n",
+    "\n",
+    "a node in the adjacency list (e.g., `0` here) will have the metadata of the entry under the same key in the `nodes` dictionary (if one exists)"
+]

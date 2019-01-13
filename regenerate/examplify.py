@@ -26,7 +26,7 @@ def get_examples_map(input_dir):
     for dir_name, subdir_names, file_names in os.walk(input_dir):
         for file_name in file_names:
             name, ext = os.path.splitext(file_name)
-            if ext in ['.py', '.m']:
+            if ext in ['.md', '.py', '.m']:
                 language = os.path.basename(dir_name)
                 file_map[name][language] = os.path.join(dir_name, file_name)
 
@@ -37,6 +37,7 @@ def make_examples(input_dir, data_output_dir, pages_output_dir):
 
     index = util.Page(
         title='examples',
+        writeable_title='examples',
         nav_order=2,
         layout='main_page',
         has_children=True,
@@ -45,8 +46,8 @@ def make_examples(input_dir, data_output_dir, pages_output_dir):
 
     index.write(pages_output_dir)
 
-    for number, (name, language_file_map) in enumerate(sorted(examples_map.items())):
-        ex = Example(name, language_file_map, example_number=number + 1)
+    for name, language_file_map in examples_map.items():
+        ex = Example(name, language_file_map)
         ex.write(page_directory=pages_output_dir, data_directory=data_output_dir)
 
 def examplify(input_dir, data_output_dir, pages_output_dir):
@@ -54,13 +55,38 @@ def examplify(input_dir, data_output_dir, pages_output_dir):
     util.clean_dir(data_output_dir)
 
     make_examples(input_dir, data_output_dir, pages_output_dir)
+
 class Example(object):
-    def __init__(self, name, language_to_file_map, example_number):
-        self.name = name
+    def __init__(self, writeable_name, language_to_file_map):
+        self.writeable_name = writeable_name
         self.language_to_file_map = language_to_file_map
-        self.example_number = example_number
+        self.read_meta()
 
         self.read()
+
+    def read_meta(self):
+        with open(self.language_to_file_map['meta'], 'r') as f:
+            content = [l.strip() for l in f.readlines()]
+
+        if content[0] == '---':
+            content.pop(0)
+
+        while content and content[0] != '---':
+            line = content.pop(0)
+            if line:
+                key, value = line.split(': ', 1)
+
+                if key == 'name':
+                    self.name = value
+                elif key == 'nav_order' :
+                    self.nav_order = value
+
+        if content and content[0] == '---':
+            content.pop(0)
+        if content and not content[0]:
+            content.pop(0)
+
+        self.text = "\n".join([line + "\n" for line in content])
 
     def create_output_directories(self):
         # set up the data directory
@@ -73,7 +99,7 @@ class Example(object):
 
     @property
     def data_directory_name(self):
-        return os.path.join(self.data_directory, self.name)
+        return os.path.join(self.data_directory, self.writeable_name)
 
     @property
     def representations_directory_name(self):
@@ -95,7 +121,7 @@ class Example(object):
         webbrowser.open_new = lambda _: None
 
         # load the example
-        spec = importlib.util.spec_from_file_location(self.name, self.language_to_file_map['python'])
+        spec = importlib.util.spec_from_file_location(self.writeable_name, self.language_to_file_map['python'])
         example_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(example_module)
 
@@ -140,15 +166,21 @@ class Example(object):
                 json.dump(content, f, indent=4, sort_keys=True)
 
     def write_page(self):
+        content = []
+
+        if self.text:
+            content.append(self.text)
+
+        content.append(self.get_webweb_visualization())
+        content.append(self.get_representations_select())
+
         page = util.Page(
-            title=self.name.replace('_', ' '),
+            title=self.name,
+            writeable_title=self.writeable_name,
             layout='home',
             parent='examples',
-            content="\n".join([
-                self.get_webweb_visualization(),
-                self.get_representations_select(),
-            ]),
-            nav_order=self.example_number,
+            content="\n".join(content),
+            nav_order=self.nav_order,
         )
 
         page.write(self.page_directory)
@@ -180,7 +212,7 @@ class Example(object):
         writeable_representation = self.writeable_representation(representation)
 
         representation_content_path = 'site.data.examples.{name}.representations.{representation}'.format(
-            name=self.name,
+            name=self.writeable_name,
             representation=writeable_representation,
         )
 
@@ -209,5 +241,6 @@ class Example(object):
 
     def get_webweb_visualization(self):
         return "{{% include webweb.html webweb_json=site.data.examples.{name}.json %}}\n".format(
-            name=self.name,
+            name=self.writeable_name,
         )
+
