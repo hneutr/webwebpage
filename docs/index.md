@@ -10,7 +10,7 @@ permalink: /
 
 a tool for creating, displaying, and sharing interactive network visualizations on the web designed for simplicity and ease of use.
 
-{% include webweb.html webweb_json=site.data.infinite_jest %}
+{% include webweb.html webweb_json=site.data.infinite_jest width=600 height=600 %}
 
 ## features
 

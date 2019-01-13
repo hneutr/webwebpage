@@ -8,8 +8,8 @@
 <script type="text/javascript">
     var wwdata = {{include.webweb_json | jsonify }};
     wwdata.display.attachWebwebToElementWithId = "example-visualization";
-    wwdata.display.w = 200;
-    wwdata.display.h = 200;
+    wwdata.display.w = {{ include.width | default: 200 }};
+    wwdata.display.h = {{ include.height | default: 200 }};
 </script>
 <br>
 <script type="text/javascript" src="{{ "/assets/js/webweb/webweb.v5.js" | absolute_url }}"></script>
