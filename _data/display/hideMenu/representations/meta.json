@@ -1,0 +1,10 @@
+[
+    "---\n",
+    "name: hideMenu\n",
+    "\n",
+    "---\n",
+    "\n",
+    "Boolean.\n",
+    "\n",
+    "If `true`, webweb's menu's will be hidden and only the network visualization will be shown."
+]

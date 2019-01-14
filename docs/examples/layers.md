@@ -6,9 +6,9 @@ title: layers
 
 ---
 
-webweb supports adding layers to networks (think timeslices). You can more forward through these with the right arrow key and backwards with the left.
-
 {% include webweb.html webweb_json=site.data.examples.layers.json %}
+
+webweb supports adding layers to networks (think timeslices). You can more forward through these with the right arrow key and backwards with the left.
 
 {% include code_switcher.html code_options="python---python (networkx)---json" %}
 <div id='python-code-block' class='select-code-block select-code-block-visible'></div>

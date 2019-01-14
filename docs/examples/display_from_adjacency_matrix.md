@@ -6,9 +6,9 @@ title: display from adjacency matrix
 
 ---
 
-webweb'll guess whether you've given it an edge list or adjacency matrix.
-
 {% include webweb.html webweb_json=site.data.examples.display_from_adjacency_matrix.json %}
+
+webweb'll guess whether you've given it an edge list or adjacency matrix.
 
 {% include code_switcher.html code_options="python---json" %}
 <div id='python-code-block' class='select-code-block select-code-block-visible'></div>

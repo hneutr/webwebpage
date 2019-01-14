@@ -57,7 +57,7 @@
           <hr>
           <h2 class="text-delta">Table of contents</h2>
           {% assign children_list = site.pages | sort:"nav_order" %}
-          <ul>
+          <ol>
             {% for child in children_list %}
               {% if child.parent == page.title and child.title != page.title %}
               <li>
@@ -65,7 +65,7 @@
               </li>
               {% endif %}
             {% endfor %}
-          </ul>
+          </ol>
           {% endif %}
         </div>
       </div>

@@ -6,9 +6,9 @@ title: 'add node metadata: scalar'
 
 ---
 
-If nodes are indexes, we can add metadata as a vector, like we've done here for the `velocity` attribute. A node's value for this attribute will be the value at its id's index in this array.
-
 {% include webweb.html webweb_json=site.data.examples.add_node_metadata_scalar.json %}
+
+If nodes are indexes, we can add metadata as a vector, like we've done here for the `velocity` attribute. A node's value for this attribute will be the value at its id's index in this array.
 
 {% include code_switcher.html code_options="python---python (networkx)---json" %}
 <div id='python-code-block' class='select-code-block select-code-block-visible'></div>

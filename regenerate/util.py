@@ -18,7 +18,7 @@ def clean_dir(directory):
             shutil.rmtree(thing_path)
 
 class Page(object):
-    def __init__(self, title, writeable_title='', has_children=False, parent=None, content=None, layout='main_page', permalink=None, nav_order=1, grand_parent=None):
+    def __init__(self, title, writeable_title, has_children=False, parent=None, content=None, layout='main_page', permalink=None, nav_order=None, grand_parent=None):
         self.title = title
         self.writeable_title = writeable_title
         self.has_children = has_children
@@ -34,8 +34,10 @@ class Page(object):
         content = {
             'title' : self.title,
             'layout' : self.layout,
-            'nav_order' : int(self.nav_order),
         }
+
+        if self.nav_order:
+            content['nav_order'] = int(self.nav_order)
 
         if self.parent:
             content['parent'] = self.parent

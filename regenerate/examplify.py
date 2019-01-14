@@ -32,36 +32,38 @@ def get_examples_map(input_dir):
 
     return file_map
 
-def make_examples(input_dir, data_output_dir, pages_output_dir):
+def examplify(input_dir, data_output_dir, pages_output_dir, collection_name, nav_order=0):
+    util.clean_dir(pages_output_dir)
+    util.clean_dir(data_output_dir)
+
     examples_map = get_examples_map(input_dir)
 
     index = util.Page(
-        title='examples',
-        writeable_title='examples',
-        nav_order=2,
+        title=collection_name,
+        writeable_title=collection_name,
+        nav_order=nav_order,
         layout='main_page',
         has_children=True,
-        permalink='/examples/',
+        permalink='/{0}/'.format(collection_name),
     )
 
     index.write(pages_output_dir)
 
-    for name, language_file_map in examples_map.items():
-        ex = Example(name, language_file_map)
+    ordered_examples_map = sorted(examples_map.items(), key=lambda x: x[0])
+
+    for i, (name, language_file_map) in enumerate(ordered_examples_map):
+        ex = Example(name, language_file_map, parent=collection_name, example_number=i + 1)
         ex.write(page_directory=pages_output_dir, data_directory=data_output_dir)
 
-def examplify(input_dir, data_output_dir, pages_output_dir):
-    util.clean_dir(pages_output_dir)
-    util.clean_dir(data_output_dir)
-
-    make_examples(input_dir, data_output_dir, pages_output_dir)
-
 class Example(object):
-    def __init__(self, writeable_name, language_to_file_map):
+    def __init__(self, writeable_name, language_to_file_map, parent, example_number):
         self.writeable_name = writeable_name
         self.language_to_file_map = language_to_file_map
+        self.parent = parent
+        self.example_number = example_number
         self.read_meta()
 
+        self.json = {}
         self.read()
 
     def read_meta(self):
@@ -106,15 +108,10 @@ class Example(object):
         return os.path.join(self.data_directory_name, 'representations')
 
     def read(self):
-        self.read_json()
+        if self.language_to_file_map.get('python'):
+            self.read_json()
+        
         self.read_representations()
-
-    @property
-    def pretty_json(self):
-        # we need two kinds of json:
-        # 1. raw json (for supplying to the webweb visualization of the example)
-        # 2. pretty json (for displaying in case someone is curious)
-        return json.dumps(self.json, indent=4, sort_keys=True)
 
     def read_json(self):
         # override the webbrowser so we don't have to open it
@@ -140,7 +137,8 @@ class Example(object):
             self.representations[lang_name] = lang_code
 
         # add the pretty json for displaying
-        self.representations['json'] = self.pretty_json
+        if self.json:
+            self.representations['json'] = json.dumps(self.json, indent=4, sort_keys=True)
 
     def write(self, page_directory, data_directory):
         self.page_directory = page_directory
@@ -151,9 +149,10 @@ class Example(object):
 
     def write_data(self):
         # write the json
-        path = os.path.join(self.data_directory_name, 'json.json')
-        with open(path, 'w') as f:
-            json.dump(self.json, f, indent=4, sort_keys=True)
+        if self.json:
+            path = os.path.join(self.data_directory_name, 'json.json')
+            with open(path, 'w') as f:
+                json.dump(self.json, f, indent=4, sort_keys=True)
 
         # write each representation
         for representation_name, content in self.representations.items():
@@ -165,33 +164,42 @@ class Example(object):
             with open(path, 'w') as f:
                 json.dump(content, f, indent=4, sort_keys=True)
 
-    def write_page(self):
+    @property
+    def content(self):
         content = []
+
+        if self.json:
+            content.append(self.get_webweb_visualization())
 
         if self.text:
             content.append(self.text)
 
-        content.append(self.get_webweb_visualization())
-        content.append(self.get_representations_select())
+        if self.representations and list(self.representations.keys()) != ['meta']:
+            content.append(self.get_representations_select())
 
+        if content:
+            return "\n".join(content)
+
+    def write_page(self):
         page = util.Page(
             title=self.name,
             writeable_title=self.writeable_name,
             layout='home',
-            parent='examples',
-            content="\n".join(content),
-            nav_order=self.nav_order,
+            parent=self.parent,
+            content=self.content,
+            nav_order=getattr(self, 'nav_order', self.example_number)
         )
 
         page.write(self.page_directory)
 
     def get_representations_select(self):
-        # we always have python code so to be consistent we will show:
-        # - python first
-        # - json last
+        # display code in a consistent order
         representation_ordering = ['python', 'python (networkx)', 'matlab', 'json']
 
         ordered_representations = [rep for rep in representation_ordering if self.representations.get(rep)]
+
+        if not ordered_representations:
+            return
 
         select_include = '{{% include code_switcher.html code_options="{options}" %}}'.format(
             options="---".join(ordered_representations)
@@ -211,7 +219,8 @@ class Example(object):
     def get_representation_select_option(self, representation):
         writeable_representation = self.writeable_representation(representation)
 
-        representation_content_path = 'site.data.examples.{name}.representations.{representation}'.format(
+        representation_content_path = 'site.data.{parent}.{name}.representations.{representation}'.format(
+            parent=self.parent,
             name=self.writeable_name,
             representation=writeable_representation,
         )
@@ -240,7 +249,7 @@ class Example(object):
         return "\n".join([div, content])
 
     def get_webweb_visualization(self):
-        return "{{% include webweb.html webweb_json=site.data.examples.{name}.json %}}\n".format(
+        return "{{% include webweb.html webweb_json=site.data.{parent}.{name}.json %}}\n".format(
+            parent=self.parent,
             name=self.writeable_name,
         )
-

@@ -6,6 +6,8 @@ title: 'add node metadata: binary'
 
 ---
 
+{% include webweb.html webweb_json=site.data.examples.add_node_metadata_binary.json %}
+
 webweb'll display a metadata attribute as binary if every node's value for that attribute is either `True` or `False`.
 
 
@@ -15,8 +17,6 @@ webweb'll display a metadata attribute as binary if every node's value for that 
 
 
 ```web.display.invertBinarySizes = True```
-
-{% include webweb.html webweb_json=site.data.examples.add_node_metadata_binary.json %}
 
 {% include code_switcher.html code_options="python---python (networkx)---json" %}
 <div id='python-code-block' class='select-code-block select-code-block-visible'></div>

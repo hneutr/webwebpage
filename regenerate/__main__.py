@@ -18,9 +18,9 @@ EXAMPLES_INPUT_DIR = os.path.join(os.getcwd(), 'webweb', 'examples')
 EXAMPLES_DATA_OUTPUT_DIR = os.path.join(os.getcwd(), '_data', 'examples')
 EXAMPLES_PAGES_OUTPUT_DIR = os.path.join(os.getcwd(), 'docs', 'examples')
 
-DOCUMENTATION_INPUT_DIR = os.path.join(os.getcwd(), 'webweb', 'docs')
-DOCUMENTATION_DATA_OUTPUT_DIR = os.path.join(os.getcwd(), '_data', 'documentation')
-DOCUMENTATION_PAGES_OUTPUT_DIR = os.path.join(os.getcwd(), 'docs', 'documentation')
+DISPLAY_INPUT_DIR = os.path.join(os.getcwd(), 'webweb', 'docs', 'display')
+DISPLAY_DATA_OUTPUT_DIR = os.path.join(os.getcwd(), '_data', 'display')
+DISPLAY_PAGES_OUTPUT_DIR = os.path.join(os.getcwd(), 'docs', 'display')
 
 # DONE:
 # 1. get the github repo
@@ -66,5 +66,18 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     refresh_webweb()
-    examplify(EXAMPLES_INPUT_DIR, EXAMPLES_DATA_OUTPUT_DIR, EXAMPLES_PAGES_OUTPUT_DIR)
+    examplify(
+        input_dir=EXAMPLES_INPUT_DIR,
+        data_output_dir=EXAMPLES_DATA_OUTPUT_DIR,
+        pages_output_dir=EXAMPLES_PAGES_OUTPUT_DIR,
+        nav_order=3,
+        collection_name='examples',
+    )
+    examplify(
+        input_dir=DISPLAY_INPUT_DIR,
+        data_output_dir=DISPLAY_DATA_OUTPUT_DIR,
+        pages_output_dir=DISPLAY_PAGES_OUTPUT_DIR,
+        nav_order=4,
+        collection_name='display',
+    )
     # docutize(DOCUMENTATION_INPUT_DIR, DOCUMENTATION_DATA_OUTPUT_DIR, DOCUMENTATION_PAGES_OUTPUT_DIR)

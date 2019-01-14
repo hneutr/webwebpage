@@ -6,9 +6,9 @@ title: multiple networks
 
 ---
 
-you can give webweb more than one network and toggle between those networks with the up and down arrow keys.
-
 {% include webweb.html webweb_json=site.data.examples.multiple_networks.json %}
+
+you can give webweb more than one network and toggle between those networks with the up and down arrow keys.
 
 {% include code_switcher.html code_options="python---python (networkx)---json" %}
 <div id='python-code-block' class='select-code-block select-code-block-visible'></div>

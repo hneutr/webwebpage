@@ -21,8 +21,6 @@ a tool for creating, displaying, and sharing interactive network visualizations 
 - embeddable
 - language support for [MATLAB](http://danlarremore.com/webweb/) and [python](https://github.com/hneutr/webweb), as well as [networkx](http://networkx.github.io/)
 
-It's mostly written in javascript (making heavy use of [d3js](d3js.org)).
-
 ---
 
 ## Why though?
@@ -31,8 +29,6 @@ Sometimes, you need to see a network _right now_ -- You don't want to finagle 40
 ---
 
 ## Alright, I have an adjacency matrix, how do I get this webweb thing to show it to me?
-
-<p></p>
 
 {% include code_switcher.html code_options="python---matlab" %}
 

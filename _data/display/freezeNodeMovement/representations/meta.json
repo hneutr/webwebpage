@@ -1,0 +1,10 @@
+[
+    "---\n",
+    "name: freezeNodeMovement\n",
+    "\n",
+    "---\n",
+    "\n",
+    "Boolean.\n",
+    "\n",
+    "If `true`, fixes nodes wherever they are. Drag & drop still works."
+]
