@@ -1,0 +1,19 @@
+[
+    "from webweb import Web\n",
+    "\n",
+    "# Instantiate webweb object\n",
+    "web = Web([[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]], display={\n",
+    "    'metadata' : {\n",
+    "        'emotion' : {\n",
+    "            'values' : ['happy', 'sad', 'angry', 'sad', 'happy', 'sad']\n",
+    "        }\n",
+    "\n",
+    "    }\n",
+    "})\n",
+    "\n",
+    "# use the 'emotion' attribute to color nodes\n",
+    "web.display.colorBy = 'emotion'\n",
+    "\n",
+    "# Launch webbrowser with result\n",
+    "web.draw()"
+]

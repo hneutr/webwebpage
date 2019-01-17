@@ -1,6 +1,6 @@
 ---
 title: contributing
-nav_order: 6
+nav_order: 7
 layout: main_page
 permalink: /contributing/
 

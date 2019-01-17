@@ -2,5 +2,7 @@
     "---\n",
     "name: l (linkLength)\n",
     "\n",
-    "---"
+    "---\n",
+    "\n",
+    "we can change the length of link edges."
 ]

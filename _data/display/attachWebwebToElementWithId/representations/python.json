@@ -1,0 +1,12 @@
+[
+    "from webweb import Web\n",
+    "\n",
+    "# Instantiate webweb object\n",
+    "web = Web([[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]])\n",
+    "\n",
+    "# attach the visualization to a given element (no '#')\n",
+    "web.display.attachWebwebToElementWithId = 'myElement'\n",
+    "\n",
+    "# Launch webbrowser with result\n",
+    "web.draw()"
+]

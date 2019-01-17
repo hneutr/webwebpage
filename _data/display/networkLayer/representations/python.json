@@ -1,0 +1,13 @@
+[
+    "from webweb import Web\n",
+    "\n",
+    "# Instantiate webweb object\n",
+    "web = Web(title='webweb', adjacency=[[0, 1]])\n",
+    "\n",
+    "web.networks.webweb.add_layer(adjacency=[[0, 1], [1, 2]])\n",
+    "\n",
+    "web.display.networkLayer = 1\n",
+    "\n",
+    "# Launch webbrowser with result\n",
+    "web.draw()"
+]

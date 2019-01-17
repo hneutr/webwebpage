@@ -1,0 +1,39 @@
+{
+    "display": {
+        "networkName": "web2"
+    },
+    "networks": {
+        "web1": {
+            "layers": [
+                {
+                    "edgeList": [
+                        [
+                            0,
+                            1
+                        ]
+                    ],
+                    "metadata": null,
+                    "nodes": null
+                }
+            ]
+        },
+        "web2": {
+            "layers": [
+                {
+                    "edgeList": [
+                        [
+                            0,
+                            1
+                        ],
+                        [
+                            1,
+                            2
+                        ]
+                    ],
+                    "metadata": null,
+                    "nodes": null
+                }
+            ]
+        }
+    }
+}

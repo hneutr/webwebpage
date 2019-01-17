@@ -2,5 +2,7 @@
     "---\n",
     "name: scaleLinkWidth\n",
     "\n",
-    "---"
+    "---\n",
+    "\n",
+    "link widths can be scaled by weight."
 ]

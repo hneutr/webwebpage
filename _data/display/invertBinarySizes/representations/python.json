@@ -1,0 +1,22 @@
+[
+    "from webweb import Web\n",
+    "\n",
+    "# Instantiate webweb object\n",
+    "web = Web([[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]], display={\n",
+    "    'metadata' : {\n",
+    "        'isHappy' : {\n",
+    "            'values' : [True, False, False, True, True, False],\n",
+    "        }\n",
+    "\n",
+    "    }\n",
+    "})\n",
+    "\n",
+    "# use the 'isHappy' attribute to size nodes\n",
+    "web.display.sizeBy = 'isHappy'\n",
+    "\n",
+    "# invert the sizes used for `False` and `True` (make `False` big and `True` small)\n",
+    "web.display.invertBinarySizes = True\n",
+    "\n",
+    "# Launch webbrowser with result\n",
+    "web.draw()"
+]

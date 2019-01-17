@@ -14,16 +14,16 @@ if the set of a metadata attribute's values contains strings (like `cooperativit
 
 if that set is all numbers (like `alphabeticallity` here), you should tell webweb how to display it by adding that metadata attribute name to the `metadata` key to the `display` attribute with an array under `categories`; a node's value for this metadata attribute should be an index into this array.
 
-{% include code_switcher.html code_options="python---python (networkx)---json" %}
-<div id='python-code-block' class='select-code-block select-code-block-visible'></div>
+{% include code_switcher.html code_options="python---python (networkx)---json" switcher_name="example-code-switcher" %}
+<div class='select-code-block example-code-switcher python-code-block select-code-block-visible'></div>
 ```python
 {{site.data.examples.add_node_metadata_categorical.representations.python}}
 ```
-<div id='python_networkx-code-block' class='select-code-block'></div>
+<div class='select-code-block example-code-switcher python_networkx-code-block'></div>
 ```python
 {{site.data.examples.add_node_metadata_categorical.representations.python_networkx}}
 ```
-<div id='json-code-block' class='select-code-block'></div>
+<div class='select-code-block example-code-switcher json-code-block'></div>
 ```json
 {{site.data.examples.add_node_metadata_categorical.representations.json}}
 ```

@@ -1,0 +1,42 @@
+{
+    "display": {
+        "scaleLinkWidth": true
+    },
+    "networks": {
+        "webweb": {
+            "layers": [
+                {
+                    "edgeList": [
+                        [
+                            0,
+                            1,
+                            5
+                        ],
+                        [
+                            1,
+                            2,
+                            20
+                        ],
+                        [
+                            2,
+                            3,
+                            0.2
+                        ],
+                        [
+                            3,
+                            4,
+                            70
+                        ],
+                        [
+                            4,
+                            5,
+                            100
+                        ]
+                    ],
+                    "metadata": null,
+                    "nodes": null
+                }
+            ]
+        }
+    }
+}

@@ -3,5 +3,9 @@
     "name: linkStrength\n",
     "\n",
     "---\n",
+    "\n",
+    "we can adjust how much links resist deformation.\n",
+    "\n",
+    "This number should be between `0` and `1`.\n",
     ""
 ]

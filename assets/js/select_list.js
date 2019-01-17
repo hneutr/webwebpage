@@ -1,4 +1,4 @@
-function changeCodeDisplay(selectlist) {
+function changeCodeDisplay(selectlist, switcherName) {
     var languages = [];
     for (var i in selectlist.options) {
         var language = selectlist.options[i].value;
@@ -15,7 +15,9 @@ function changeCodeDisplay(selectlist) {
 
     for (var i in languages) {
         var language = languages[i];
-        var languageCodeElement = document.getElementById(language + '-code-block');
+
+        var classesToSelectOn = language + '-code-block' + ' ' + switcherName;
+        var languageCodeElement = document.getElementsByClassName(classesToSelectOn)[0];
 
         if (language == selectedLanguage) {
             languageCodeElement.classList.add("select-code-block-visible");

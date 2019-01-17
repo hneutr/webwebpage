@@ -2,5 +2,7 @@
     "---\n",
     "name: sizeBy\n",
     "\n",
-    "---"
+    "---\n",
+    "\n",
+    "scalar metadata attributes can be used to compute node size."
 ]

@@ -2,7 +2,7 @@
 
 showing: 
 <span class="custom-dropdown">
-    <select onchange="changeCodeDisplay(this)">
+    <select onchange="changeCodeDisplay(this, '{{ include.switcher_name }}')">
         {%- for code_option in code_options %}
             <option value="{{code_option}}">{{code_option}}</option>
         {%- endfor -%}

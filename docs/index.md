@@ -30,9 +30,9 @@ Sometimes, you need to see a network _right now_ -- You don't want to finagle 40
 
 ## Alright, I have an adjacency matrix, how do I get this webweb thing to show it to me?
 
-{% include code_switcher.html code_options="python---matlab" %}
+{% include code_switcher.html code_options="python---matlab" switcher_name="simple-code" %}
 
-<div id='python-code-block' class='select-code-block select-code-block-visible'></div>
+<div class='select-code-block select-code-block-visible python-code-block simple-code'></div>
 ```python
 from webweb import Web
 
@@ -45,7 +45,7 @@ web = Web(edge_list)
 # Launch webbrowser with result
 web.draw()
 ```
-<div id='matlab-code-block' class='select-code-block'></div>
+<div class='select-code-block matlab-code-block simple-code'></div>
 ```matlab
 A = floor(1.01 * rand(100,100)); 
 A = A + A'; 
@@ -57,12 +57,12 @@ webweb(A);
 
 ## How do I install it?
 
-{% include code_switcher.html code_options="python---matlab" %}
-<div id='python-code-block' class='select-code-block select-code-block-visible'></div>
+{% include code_switcher.html code_options="python---matlab" switcher_name="install-switcher" %}
+<div class='select-code-block python-code-block select-code-block-visible install-switcher'></div>
 ```python
 pip install webweb
 ```
-<div id='matlab-code-block' class='select-code-block'></div>
+<div class='select-code-block matlab-code-block install-switcher'></div>
 ```matlab
 git clone //https://github.com/dblarremore/webweb
 ```

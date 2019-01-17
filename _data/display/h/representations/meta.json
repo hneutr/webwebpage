@@ -3,5 +3,6 @@
     "name: h (height)\n",
     "\n",
     "---\n",
-    ""
+    "\n",
+    "you can change the height of the visualization by setting the `display.h` property."
 ]

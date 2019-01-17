@@ -201,7 +201,7 @@ class Example(object):
         if not ordered_representations:
             return
 
-        select_include = '{{% include code_switcher.html code_options="{options}" %}}'.format(
+        select_include = '{{% include code_switcher.html code_options="{options}" switcher_name="example-code-switcher" %}}'.format(
             options="---".join(ordered_representations)
         )
 
@@ -217,12 +217,10 @@ class Example(object):
         return re.sub(r'\W+', '', representation.replace(' ', '_'))
 
     def get_representation_select_option(self, representation):
-        writeable_representation = self.writeable_representation(representation)
-
         representation_content_path = 'site.data.{parent}.{name}.representations.{representation}'.format(
             parent=self.parent,
             name=self.writeable_name,
-            representation=writeable_representation,
+            representation=self.writeable_representation(representation),
         )
 
         language = representation
@@ -235,16 +233,17 @@ class Example(object):
             content_path=representation_content_path,
         )
 
-        representation_display_classes = ["select-code-block"]
+        representation_display_classes = [
+            "select-code-block",
+            "example-code-switcher",
+            "{0}-code-block".format(self.writeable_representation(representation)),
+        ]
 
         # make python visible
         if representation == 'python':
             representation_display_classes.append("select-code-block-visible")
 
-        div = "<div id='{representation}-code-block' class='{class_string}'></div>".format(
-            representation=writeable_representation,
-            class_string=" ".join(representation_display_classes),
-        )
+        div = "<div class='{0}'></div>".format(" ".join(representation_display_classes))
 
         return "\n".join([div, content])
 

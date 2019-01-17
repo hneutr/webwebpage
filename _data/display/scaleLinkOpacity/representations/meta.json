@@ -2,5 +2,7 @@
     "---\n",
     "name: scaleLinkOpacity\n",
     "\n",
-    "---"
+    "---\n",
+    "\n",
+    "link opacity can be scaled by weight."
 ]

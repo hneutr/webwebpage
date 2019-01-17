@@ -1,0 +1,31 @@
+{
+    "display": {
+        "freezeNodeMovement": true,
+        "nodes": {
+            "0": {
+                "x": 100,
+                "y": 75
+            },
+            "1": {
+                "x": 100,
+                "y": 150
+            }
+        }
+    },
+    "networks": {
+        "webweb": {
+            "layers": [
+                {
+                    "edgeList": [
+                        [
+                            0,
+                            1
+                        ]
+                    ],
+                    "metadata": null,
+                    "nodes": null
+                }
+            ]
+        }
+    }
+}

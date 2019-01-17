@@ -1,0 +1,11 @@
+[
+    "from webweb import Web\n",
+    "\n",
+    "# Instantiate webweb object\n",
+    "web = Web([[0, 1, 5], [1, 2, 20], [2, 3, .2], [3, 4, 70], [4, 5, 100]])\n",
+    "\n",
+    "web.display.scaleLinkWidth = True\n",
+    "\n",
+    "# Launch webbrowser with result\n",
+    "web.draw()"
+]

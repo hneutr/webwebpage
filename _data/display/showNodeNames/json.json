@@ -1,0 +1,36 @@
+{
+    "display": {
+        "nodes": {
+            "0": {
+                "name": "Huberg"
+            },
+            "1": {
+                "name": "Pierot"
+            },
+            "2": {
+                "name": "Slartibertfast"
+            }
+        },
+        "showNodeNames": true
+    },
+    "networks": {
+        "webweb": {
+            "layers": [
+                {
+                    "edgeList": [
+                        [
+                            0,
+                            1
+                        ],
+                        [
+                            1,
+                            2
+                        ]
+                    ],
+                    "metadata": null,
+                    "nodes": null
+                }
+            ]
+        }
+    }
+}
