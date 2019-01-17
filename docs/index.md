@@ -14,17 +14,11 @@ a tool for creating, displaying, and sharing interactive network visualizations 
 
 ## features
 
-- draws simple graphs
-- can handle multiple networks
-- supports layered networks (e.g., networks that change in time)
-- creates a single file without dependencies for easy sharing
-- embeddable
-- language support for [MATLAB](http://danlarremore.com/webweb/) and [python](https://github.com/hneutr/webweb), as well as [networkx](http://networkx.github.io/)
-
----
-
-## Why though?
-Sometimes, you need to see a network _right now_ -- You don't want to finagle 400 libraries or debug, you just want to see it. Right. Now. Enter webweb.
+- simple and configurable model
+- easy to share (one file, no dependencies)
+- easy to embed
+- does what you need it to (multiple networks, layered networks)
+- interfaces for multiple languages (`python`, `MATLAB`) and libraries (`networkx`)
 
 ---
 

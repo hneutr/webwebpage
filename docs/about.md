@@ -8,11 +8,13 @@ permalink: /about/
 
 ## who made it
 
-Dan Larremore made this!
+[Dan Larremore](http://danlarremore.com) made this! [Hunter Wapman](https://hneutr.github.io) worked on it too. Michael Iuzzolino first made the python interface.
 
 Some other people helped too.
 
-## why
+## why though?
+
+Sometimes, you need to see a network _right now_ -- You don't want to finagle 400 libraries or debug, you just want to see it. Right. Now. Enter webweb.
 
 ## how
 

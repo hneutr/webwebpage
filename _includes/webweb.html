@@ -4,7 +4,7 @@
 <script type="text/javascript" src="{{ "/assets/js/webweb/d3.v5.min.js" | absolute_url }}"></script>
 <script type="text/javascript" src="{{ "/assets/js/webweb/FileSaver.min.js" | absolute_url }}"></script>
 
-<div id='example-visualization' style='width: 100%'></div>
+<div id='example-visualization' style='width: 100%'><br></div>
 <script type="text/javascript">
     var wwdata = {{include.webweb_json | jsonify }};
     wwdata.display.attachWebwebToElementWithId = "example-visualization";
