@@ -9,6 +9,10 @@ title: linkStrength
 
 {% include webweb.html webweb_json=site.data.documentation.display.linkStrength.json %}
 
+```type```: positive non-zero float
+
+```default```: ```1```
+
 we can adjust how much links resist deformation.
 
 

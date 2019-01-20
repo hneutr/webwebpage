@@ -1,6 +1,10 @@
 [
     "---\n",
     "name: nameToMatch\n",
+    "type: string\n",
+    "default: \"\"\n",
     "\n",
-    "---"
+    "---\n",
+    "\n",
+    "we can show nodes whose name matches a given value by setting the `nameToMatch` parameter."
 ]

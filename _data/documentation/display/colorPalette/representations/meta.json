@@ -1,6 +1,10 @@
 [
     "---\n",
     "name: colorPalette\n",
+    "type: string\n",
+    "default: 'Set1'\n",
     "\n",
-    "---"
+    "---\n",
+    "\n",
+    "we can change the color palette webweb uses to color categorical nodes with the `colorPalette` parameter."
 ]

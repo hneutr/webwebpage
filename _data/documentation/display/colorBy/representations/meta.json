@@ -1,8 +1,12 @@
 [
     "---\n",
     "name: colorBy\n",
+    "type: string\n",
+    "default: 'none'\n",
     "\n",
     "---\n",
+    "\n",
+    "we can color nodes by a metadata attribute by setting the `colorBy` parameter to that attribute's name.\n",
     "\n",
     "any metadata attribute can be used to compute node size."
 ]

@@ -13,7 +13,7 @@ title: height
 
 ```synonyms```: h
 
-you can change the height of the visualization by setting the `display.height` property.
+we can change the height of the visualization by setting the `display.height` property.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}
 <div class='select-code-block example-code-switcher python-code-block select-code-block-visible'></div>

@@ -1,8 +1,10 @@
 [
     "---\n",
     "name: scaleLinkWidth\n",
+    "type: boolean\n",
+    "default: false\n",
     "\n",
     "---\n",
     "\n",
-    "link widths can be scaled by weight."
+    "we can scale link widths by their weight by setting the `scaleLinkWidth` parameter."
 ]

@@ -13,7 +13,7 @@ title: width
 
 ```synonyms```: w
 
-you can change the width of the visualization by setting the `display.width` property.
+we can change the width of the visualization by setting the `display.width` property.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}
 <div class='select-code-block example-code-switcher python-code-block select-code-block-visible'></div>

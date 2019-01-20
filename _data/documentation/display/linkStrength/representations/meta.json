@@ -1,6 +1,8 @@
 [
     "---\n",
     "name: linkStrength\n",
+    "type: positive non-zero float\n",
+    "default: 1\n",
     "\n",
     "---\n",
     "\n",

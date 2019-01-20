@@ -1,7 +1,10 @@
 [
     "---\n",
     "name: showNodeNames\n",
+    "type: boolean\n",
+    "default: false\n",
     "\n",
     "---\n",
-    ""
+    "\n",
+    "we can show all node names by setting the `showNodeNames` parameter."
 ]

@@ -1,6 +1,8 @@
 [
     "---\n",
     "name: hideMenu\n",
+    "type: boolean\n",
+    "default: false\n",
     "\n",
     "---\n",
     "\n",

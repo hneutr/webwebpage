@@ -9,6 +9,10 @@ title: invertBinarySizes
 
 {% include webweb.html webweb_json=site.data.documentation.display.invertBinarySizes.json %}
 
+```type```: boolean
+
+```default```: false
+
 If we're sizing nodes by a binary attribute, by default nodes with a value of `True` will be big and nodes with a value of `False` will be small, but if we want to, we can flip that.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}

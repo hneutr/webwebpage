@@ -9,6 +9,10 @@ title: hideMenu
 
 {% include webweb.html webweb_json=site.data.documentation.display.hideMenu.json %}
 
+```type```: boolean
+
+```default```: false
+
 Boolean.
 
 

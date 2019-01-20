@@ -1,8 +1,12 @@
 [
     "---\n",
     "name: sizeBy\n",
+    "type: string\n",
+    "default: 'none'\n",
     "\n",
     "---\n",
     "\n",
-    "scalar metadata attributes can be used to compute node size."
+    "we can compute node radii by a metadata attribute by setting the `sizeBy` parameter to that attribute's name. \n",
+    "\n",
+    "categorical metadata attributes can't be used to compute node sizes."
 ]
