@@ -38,22 +38,26 @@ def examplify(input_dir, data_output_dir, pages_output_dir, collection_name, nav
 
     examples_map = get_examples_map(input_dir)
 
-    index = util.Page(
+    util.Index(
         title=collection_name,
         writeable_title=collection_name,
         nav_order=nav_order,
         layout='main_page',
         has_children=True,
-        permalink='/{0}/'.format(collection_name),
-    )
-
-    index.write(pages_output_dir)
+    ).write(pages_output_dir)
 
     ordered_examples_map = sorted(examples_map.items(), key=lambda x: x[0])
 
-    for i, (name, language_file_map) in enumerate(ordered_examples_map):
-        ex = Example(name, language_file_map, parent=collection_name, example_number=i + 1)
-        ex.write(page_directory=pages_output_dir, data_directory=data_output_dir)
+    for i, (name, language_to_file_map) in enumerate(ordered_examples_map):
+        Example(
+            writeable_name=name,
+            language_to_file_map=language_to_file_map,
+            parent=collection_name,
+            example_number=i + 1,
+        ).write(
+            page_directory=pages_output_dir,
+            data_directory=data_output_dir,
+        )
 
 class Example(object):
     def __init__(self, writeable_name, language_to_file_map, parent, example_number):
@@ -73,15 +77,18 @@ class Example(object):
         if content[0] == '---':
             content.pop(0)
 
+        self.extra = {}
         while content and content[0] != '---':
             line = content.pop(0)
             if line:
                 key, value = line.split(': ', 1)
 
                 if key == 'name':
-                    self.name = value
+                    self.title = value
                 elif key == 'nav_order' :
                     self.nav_order = value
+                else:
+                    self.extra[key] = value
 
         if content and content[0] == '---':
             content.pop(0)
@@ -118,11 +125,8 @@ class Example(object):
         webbrowser.open_new = lambda _: None
 
         # load the example
-        spec = importlib.util.spec_from_file_location(self.writeable_name, self.language_to_file_map['python'])
-        example_module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(example_module)
-
-        self.json = json.loads(example_module.web.json)
+        module = util.get_module(self.writeable_name, self.language_to_file_map['python'])
+        self.json = json.loads(module.web.json)
 
     def read_representations(self):
         """this function returns a dictionary with data displayed in the code switcher"""
@@ -171,6 +175,12 @@ class Example(object):
         if self.json:
             content.append(self.get_webweb_visualization())
 
+        if self.extra:
+            extra_content = self.get_extra_content()
+
+            if extra_content:
+                content.append(extra_content)
+
         if self.text:
             content.append(self.text)
 
@@ -180,14 +190,33 @@ class Example(object):
         if content:
             return "\n".join(content)
 
+    def get_extra_content(self):
+        key_ordering = ['type', 'synonyms', 'default']
+        extra_content = []
+        for key in key_ordering:
+            value = self.extra.get(key, None)
+            if value:
+                line = "```{0}```: ".format(key)
+
+                if util.is_int(value):
+                    line += "```{0}```".format(int(value))
+                elif util.is_float(value):
+                    line += "```{0}```".format(float(value))
+                else:
+                    line += value
+
+                extra_content.append(line + "\n")
+
+        return "\n".join(extra_content)
+
     def write_page(self):
         page = util.Page(
-            title=self.name,
+            title=self.title,
             writeable_title=self.writeable_name,
             layout='home',
             parent=self.parent,
             content=self.content,
-            nav_order=getattr(self, 'nav_order', self.example_number)
+            nav_order=getattr(self, 'nav_order', self.example_number),
         )
 
         page.write(self.page_directory)

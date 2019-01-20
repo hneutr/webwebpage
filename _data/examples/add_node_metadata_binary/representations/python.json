@@ -17,13 +17,21 @@
     "            'Carl' : {\n",
     "                'wearsGlasses' : False,\n",
     "            },\n",
+    "            'Tzu-Chi' : {},\n",
     "        },\n",
+    "        'metadata' : {\n",
+    "            'wearsContacts' : {\n",
+    "                'values' : [True, False, True, False, False],\n",
+    "            }\n",
+    "        }\n",
     "    },\n",
     ")\n",
     "\n",
     "# use the 'wearsGlasses' to compute node sizes\n",
     "web.display.sizeBy = 'wearsGlasses'\n",
     "\n",
-    "# open the browser with the result\n",
-    "web.draw()"
+    "web.display.colorBy = 'wearsContacts'\n",
+    "\n",
+    "# show the visualization\n",
+    "web.show()"
 ]

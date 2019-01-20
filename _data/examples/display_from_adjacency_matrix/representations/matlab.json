@@ -1,0 +1,12 @@
+[
+    "% make an unweighted adjacency matrix\n",
+    "adjacency_matrix = [...\n",
+    "    0, 1, 0, 0;...\n",
+    "    1, 0, 1, 0;...\n",
+    "    0, 1, 0, 1;...\n",
+    "    0, 0, 1, 0;...\n",
+    "];\n",
+    "\n",
+    "% call webweb\n",
+    "webweb(adjacency_matrix);"
+]

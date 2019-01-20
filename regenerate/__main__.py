@@ -1,6 +1,5 @@
 # this script recreates from scratch the documentation
 from examplify import examplify
-from docutize import docutize
 import argparse
 import os
 import shutil
@@ -10,6 +9,7 @@ import util
 
 WEBWEB_URL = "https://github.com/dblarremore/webweb.git"
 WEBWEB_DIR = os.path.join(os.getcwd(), 'webweb')
+WEBWEB_CODE = os.path.join(WEBWEB_DIR, 'webweb', 'webweb.py')
 
 JEKYLL_ASSETS_DIR = os.path.join(os.getcwd(), 'assets')
 WEBWEB_ASSETS_DIR = os.path.join(os.getcwd(), 'webweb', 'client')
@@ -18,20 +18,14 @@ EXAMPLES_INPUT_DIR = os.path.join(os.getcwd(), 'webweb', 'examples')
 EXAMPLES_DATA_OUTPUT_DIR = os.path.join(os.getcwd(), '_data', 'examples')
 EXAMPLES_PAGES_OUTPUT_DIR = os.path.join(os.getcwd(), 'docs', 'examples')
 
+DOCUMENTATION_PAGES_OUTPUT_DIR = os.path.join(os.getcwd(), 'docs', 'documentation')
+
 DISPLAY_INPUT_DIR = os.path.join(os.getcwd(), 'webweb', 'docs', 'display')
+
 DISPLAY_DATA_OUTPUT_DIR = os.path.join(os.getcwd(), '_data', 'display')
 DISPLAY_PAGES_OUTPUT_DIR = os.path.join(os.getcwd(), 'docs', 'display')
 
-# DONE:
-# 1. get the github repo
-#     - update it if there
-# 2. set up the webweb code
-# 3. set up the directories
-#     - clean them if they exist
-#     - create them if they don't
-# 4. create the examples
-
-# 5. create the documentation
+PYDOC_PAGES_OUTPUT_DIR = os.path.join(DOCUMENTATION_PAGES_OUTPUT_DIR, 'python')
 
 def refresh_webweb():
     if os.path.isdir(WEBWEB_DIR):
@@ -61,23 +55,124 @@ def copy_webweb_client_to_site():
                 destination = os.path.join(assets_directory, file_name)
                 shutil.copyfile(full_path, destination)
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    args = parser.parse_args()
 
-    refresh_webweb()
-    examplify(
-        input_dir=EXAMPLES_INPUT_DIR,
-        data_output_dir=EXAMPLES_DATA_OUTPUT_DIR,
-        pages_output_dir=EXAMPLES_PAGES_OUTPUT_DIR,
-        nav_order=3,
-        collection_name='examples',
-    )
+def docutize(output_dir):
+    util.clean_dir(output_dir)
+
+    title = 'documentation'
+
+    util.Index(
+        title=title,
+        writeable_title=title,
+        nav_order=4,
+        layout='main_page',
+        has_children=True,
+        content="full documentation for webweb's parameters and interfaces"
+    ).write(output_dir)
+
     examplify(
         input_dir=DISPLAY_INPUT_DIR,
         data_output_dir=DISPLAY_DATA_OUTPUT_DIR,
         pages_output_dir=DISPLAY_PAGES_OUTPUT_DIR,
-        nav_order=4,
+        nav_order=1,
         collection_name='display',
     )
-    # docutize(DOCUMENTATION_INPUT_DIR, DOCUMENTATION_DATA_OUTPUT_DIR, DOCUMENTATION_PAGES_OUTPUT_DIR)
+
+    py_output_dir = os.path.join(output_dir, 'python')
+    pydocutize(py_output_dir, 'documentation', 2)
+
+
+def pydocutize(output_dir, parent, nav_order):
+    functions_mapping = {
+        'Web' : {
+            'display_name' : 'Web',
+            'functions' : [
+                '__init__',
+                'show',
+                'save',
+            ],
+        },
+        'Network' : {
+            'display_name' : 'Web.networks.name',
+            'functions' : [
+                '__init__',
+                'add_layer',
+            ],
+        }
+    }
+
+    util.clean_dir(output_dir)
+    import pydoc
+    import inspect
+    webweb_module = util.get_module('webweb', WEBWEB_CODE)
+
+    container = 'python'
+
+    util.Index(
+        title=container,
+        writeable_title=container,
+        nav_order=2,
+        layout='main_page',
+        has_children=True,
+        parent=parent,
+        content="full documentation for the python code."
+    ).write(output_dir)
+
+    counter = 1
+    for object_name in functions_mapping.keys():
+        _object = getattr(webweb_module, object_name)
+
+        object_display_name = functions_mapping[object_name]['display_name']
+
+        for function_name in functions_mapping[object_name]['functions']:
+            function_object = getattr(_object, function_name)
+            function_signature = inspect.signature(function_object)
+
+            # we want to exclude `self`
+            parameters_list = []
+            for parameter, parameter_string in function_signature.parameters.items():
+                if parameter != 'self':
+                    parameters_list.append(str(parameter_string))
+
+            signature_string = "(" + ", ".join(parameters_list) + ")"
+
+            function_doc = pydoc.getdoc(function_object)
+            qualified_function_name = object_display_name
+            writeable_function_name = object_display_name
+            if function_name == '__init__':
+                function_doc = pydoc.getdoc(_object) + "\n\n" + function_doc
+            else:
+                qualified_function_name += '.' + function_name
+                writeable_function_name += '_' + function_name
+
+            content = "```python\n{name}{signature}\n````\n\n{doc}".format(
+                name=qualified_function_name,
+                signature=signature_string,
+                doc=function_doc,
+            )
+
+            util.Page(
+                title=qualified_function_name,
+                writeable_title=writeable_function_name,
+                nav_order=counter,
+                layout='main_page',
+                parent=container,
+                grand_parent=parent,
+                content=content,
+            ).write(output_dir)
+
+            counter += 1
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    args = parser.parse_args()
+
+    # refresh_webweb()
+    # examplify(
+    #     input_dir=EXAMPLES_INPUT_DIR,
+    #     data_output_dir=EXAMPLES_DATA_OUTPUT_DIR,
+    #     pages_output_dir=EXAMPLES_PAGES_OUTPUT_DIR,
+    #     nav_order=3,
+    #     collection_name='examples',
+    # )
+    docutize(DOCUMENTATION_PAGES_OUTPUT_DIR)

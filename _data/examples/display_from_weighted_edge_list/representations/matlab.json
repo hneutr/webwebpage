@@ -1,0 +1,17 @@
+[
+    "% make a matrix of weighted edges\n",
+    "% edge weights are the third element in the edge\n",
+    "edge_list = [...\n",
+    "    1, 2, .1;... \n",
+    "    2, 3, .5;... \n",
+    "    3, 4, 1;... \n",
+    "    4, 5, 2;...\n",
+    "];\n",
+    "\n",
+    "% call webweb\n",
+    "webweb(edge_list);\n",
+    "\n",
+    "% [OPTIONAL] set webweb's display default: show weighted edges.\n",
+    "\n",
+    "% DBL TODO"
+]

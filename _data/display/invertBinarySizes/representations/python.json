@@ -17,6 +17,6 @@
     "# invert the sizes used for `False` and `True` (make `False` big and `True` small)\n",
     "web.display.invertBinarySizes = True\n",
     "\n",
-    "# Launch webbrowser with result\n",
-    "web.draw()"
+    "# show the visualization\n",
+    "web.show()"
 ]

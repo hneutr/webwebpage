@@ -20,7 +20,6 @@
     "# we'll compute node color by the `velocity` metadata attribute\n",
     "web.display.colorBy = 'velocity'\n",
     "\n",
-    "# open the browser with the result\n",
-    "web.draw()\n",
-    ""
+    "# show the visualization\n",
+    "web.show()"
 ]

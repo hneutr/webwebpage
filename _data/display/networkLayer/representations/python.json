@@ -8,6 +8,6 @@
     "\n",
     "web.display.networkLayer = 1\n",
     "\n",
-    "# Launch webbrowser with result\n",
-    "web.draw()"
+    "# show the visualization\n",
+    "web.show()"
 ]

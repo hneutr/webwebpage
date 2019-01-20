@@ -19,6 +19,6 @@
     "# categorical or binary attribute\n",
     "web.display.colorPalette = 'Set3'\n",
     "\n",
-    "# Launch webbrowser with result\n",
-    "web.draw()"
+    "# show the visualization\n",
+    "web.show()"
 ]

@@ -39,6 +39,6 @@
     "# (categorical metadata can't be used to compute node sizes)\n",
     "web.display.colorBy = 'alphabeticallity'\n",
     "\n",
-    "# open the browser with the result\n",
-    "web.draw()"
+    "# show the visualization\n",
+    "web.show()"
 ]

@@ -89,14 +89,15 @@
     "    }\n",
     ")\n",
     "\n",
-    "# display the `snake` network first\n",
+    "# display the `starfish` network first\n",
     "web.display.networkName = 'starfish'\n",
     "\n",
-    "# we'll compute node color by the `hunger` attribute\n",
+    "# we'll compute node color by the `texture` attribute\n",
     "web.display.colorBy = 'texture'\n",
     "\n",
-    "# we'll compute node size by the `isHead` attribute\n",
+    "# we'll compute node size by the `hunger` attribute\n",
     "web.display.sizeBy = 'hunger'\n",
     "\n",
-    "web.draw()"
+    "# show the visualization\n",
+    "web.show()"
 ]

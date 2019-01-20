@@ -24,6 +24,15 @@ var displayDefaults = {
     'nameToMatch' : "",
 };
 
+var displayParameterSynonyms = [
+    ['c', 'charge'],
+    ['g', 'gravity'],
+    ['h', 'height'],
+    ['l', 'linkLength'],
+    ['r', 'radius'],
+    ['w', 'width'],
+];
+
 var display = {};
 var networkNames;
 
@@ -67,7 +76,8 @@ function initializeWebweb() {
     // default the network to display to the first in networks list
     displayDefaults['networkName'] = networkNames[0];
 
-    display = wwdata.display;
+    display = wwdata.display == undefined ? {} : wwdata.display;
+    display = standardizeDisplayParameterSynonyms(display);
     for (var key in displayDefaults) {
         if (display[key] == undefined) {
             display[key] = displayDefaults[key];
@@ -99,6 +109,19 @@ function initializeWebweb() {
 
     displayNetwork();
 }
+function standardizeDisplayParameterSynonyms(display) {
+    for (var i in displayParameterSynonyms) {
+        var key1 = displayParameterSynonyms[i][0];
+        var key2 = displayParameterSynonyms[i][1];
+
+        if (display[key1] == undefined && display[key2] !== undefined) {
+            display[key1] = display[key2];
+        }
+
+        delete display[key2];
+    }
+    return display;
+}
 function initializeHTML() {
     var container;
 
@@ -107,6 +130,10 @@ function initializeHTML() {
         container.setAttribute('id', 'webweb-center');
 
         document.getElementsByTagName("body")[0].appendChild(container);
+
+        if (wwdata.title !== undefined) {
+            document.title = wwdata.title;
+        }
     }
     else {
         container = document.getElementById(display.attachWebwebToElementWithId);
@@ -153,7 +180,7 @@ function standardizeRepresentation() {
         standardizeNetworkRepresentation(networkNames[i]);
     }
 
-    display.nodes = addMetadataVectorsToNodes(display.metadata, display.nodes);
+    // display.nodes = addMetadataVectorsToNodes(display.metadata, display.nodes);
 }
 function standardizeNetworkRepresentation(networkName) {
     var network = wwdata.networks[networkName];
@@ -192,27 +219,17 @@ function standardizeLayerRepresentation(layer) {
 
         }
 
-        layer.nodes = addMetadataVectorsToNodes(layer.metadata, layer.nodes);
+        // layer.nodes = addMetadataVectorsToNodes(layer.metadata, layer.nodes);
     }
 
     return layer;
 }
-function addMetadataVectorsToNodes(metadata, nodes) {
-    if (nodes == undefined) {
-        nodes = {};
-    }
-
+function addMetadataVectorsToNodes(metadata) {
     for (var metadatum in metadata) {
         for (var i in metadata[metadatum].values) {
-            if (nodes[i] == undefined) {
-                nodes[i] = {};
-            }
-        
             nodes[i][metadatum] = metadata[metadatum].values[i];
         }
     }
-
-    return nodes;
 }
 ////////////////////////////////////////////////////////////////////////////////
 // - changes the number of visible nodes
@@ -290,14 +307,16 @@ function setVisibleNodes() {
         }
     }
 }
-function addNodeMetadata(metadata, nodeIdMap) {
-    if (getObjetPropertyCount(metadata) == 0) {
+function addNodeMetadata(source, nodeIdMap) {
+    addMetadataVectorsToNodes(source.metadata);
+
+    if (getObjetPropertyCount(source.nodes) == 0) {
         return;
     }
 
-    for (var i in metadata) {
-        for (var metadatum in metadata[i]) {
-            nodes[nodeIdMap[i]][metadatum] = metadata[i][metadatum];
+    for (var i in source.nodes) {
+        for (var metadatum in source.nodes[i]) {
+            nodes[nodeIdMap[i]][metadatum] = source.nodes[i][metadatum];
         }
     }
 }
@@ -332,6 +351,10 @@ function getNodeIdMap(networkName, networkLayer) {
         }
     }
 
+    if (allInts(nodeNames)) {
+        nodeNames.sort();
+    }
+
     var unusedId = 0;
     var nodeIdMap = {};
     for (var i in nodeNames) {
@@ -342,7 +365,49 @@ function getNodeIdMap(networkName, networkLayer) {
         }
     }
 
+    var displayMetadataValuesCount = metadataValuesCount(display.metadata);
+
+    var unusedName = 0;
+    for(var key in nodeIdMap){
+        if (isInt(key) && key >= unusedName) {
+            unusedName = key + 1;
+        }
+    }
+
+    if (displayMetadataValuesCount > unusedId) {
+        while (displayMetadataValuesCount > unusedId) {
+            nodeIdMap[unusedName] = unusedId;
+            unusedName += 1;
+            unusedId += 1;
+        }
+    }
+
+    var networkMetadataValuesCount = metadataValuesCount(networkData.metadata);
+
+    if (networkMetadataValuesCount > unusedId) {
+        while (networkMetadataValuesCount > unusedId) {
+            nodeIdMap[unusedName] = unusedId;
+            unusedName += 1;
+            unusedId += 1;
+        }
+    }
+
     return nodeIdMap;
+}
+function metadataValuesCount(metadata) {
+    var maxValuesCount = 0;
+    if (metadata !== undefined) {
+        for (var metadatum in metadata) {
+            var values = metadata[metadatum].values;
+            if (values !== undefined) {
+                var valuesCount = values.length;
+                if (valuesCount > maxValuesCount) {
+                    maxValuesCount = valuesCount;
+                }
+            }
+        }
+    }
+    return maxValuesCount;
 }
 ////////////////////////////////////////////////////////////////////////////////
 // loads the metadata up from the places they could come from:
@@ -379,10 +444,10 @@ function setNodeMetadata() {
 
     var nodeIdMap = getNodeIdMap(display.networkName, display.networkLayer);
 
-    addNodeMetadata(display.nodes, nodeIdMap);
+    addNodeMetadata(display, nodeIdMap);
 
     var networkData = wwdata.networks[display.networkName].layers[display.networkLayer];
-    addNodeMetadata(networkData.nodes, nodeIdMap);
+    addNodeMetadata(networkData, nodeIdMap);
 
     var nodeNameMap = {};
     for(var key in nodeIdMap){
@@ -397,11 +462,15 @@ function setNodeMetadata() {
                 allMetadata[key] = {};
 
                 if (display.metadata !== undefined && display.metadata[key] !== undefined) {
-                    // if we have categories, change the node values here
-                    if (display.metadata[key].categories !== undefined) {
-                        var nodeCategoryNumber = nodes[i][key];
-                        nodes[i][key] = display.metadata[key].categories[nodeCategoryNumber];
+                    var metadatumInfo = display.metadata[key];
 
+                    // if we have categories, change the node values here
+                    if (metadatumInfo.categories !== undefined) {
+                        var nodeCategoryNumber = nodes[i][key];
+                        nodes[i][key] = metadatumInfo.categories[nodeCategoryNumber];
+                    }
+                    else if (metadatumInfo.type !== undefined && metadatumInfo.type == 'binary') {
+                        nodes[i][key] = nodes[i][key] ? true : false;
                     }
                 }
             }
@@ -416,6 +485,10 @@ function setNodeMetadata() {
     sizeData.metadata = {};
     colorData.metadata = {};
     for (metadatum in allMetadata) {
+        if (metadatum == 'name') {
+            continue;
+        }
+
         if (allMetadata[metadatum].type == undefined) {
             allMetadata[metadatum].type = getMetadatumType(metadatum);
         }
@@ -508,14 +581,8 @@ function computeNodes() {
     for (var i = 0; i < display.N; i++) {
         nodes.push({
             "idx" : i,
-            "degree" : 0,
-            "x" : display.nodeCoordinates !== undefined ? display.nodeCoordinates[i].x : undefined,
-            "y" : display.nodeCoordinates !== undefined ? display.nodeCoordinates[i].y : undefined,
         });
     }
-}
-function getCurrentNetworkLayer() {
-    return wwdata.networks[display.networkName].layers[display.networkLayer];
 }
 ////////////////////////////////////////////////////////////////////////////////
 // initialize links/edges
@@ -524,19 +591,18 @@ function getCurrentNetworkLayer() {
 // - calculate node weights/degrees
 ////////////////////////////////////////////////////////////////////////////////
 function computeLinks() {
-    links = [];
-
     var nodeIdMap = getNodeIdMap(display.networkName, display.networkLayer);
 
-    // make a matrix so edges between nodes can only occur once
-    var matrix = {}
-    for (var i in nodeIdMap) {
-        matrix[nodeIdMap[i]] = {};
-    }
+    var linkMatrix = {}
 
     // reset the node degrees
     for (var i in nodes) {
         nodes[i].degree = 0;
+
+        linkMatrix[i] = {};
+        for (var j in nodes) {
+            linkMatrix[i][j] = 0;
+        }
     }
 
     var networkData = getNetworkData(display.networkName, display.networkLayer);
@@ -552,19 +618,28 @@ function computeLinks() {
         var weight = edge.length == 3 ? parseFloat(edge[2]) : 1;
 
         weights.push(weight);
+
+        if (source <= target) {
+            linkMatrix[source][target] += weight;
+        }
+        else {
+            linkMatrix[target][source] += weight;
+        }
             
-        links.push({
-            source: source,
-            target: target,
-            w: weight,
-        })
+        nodes[source].degree += weight;
+        nodes[target].degree += weight;
+    }
 
-        if (! matrix[source][target]) {
-            matrix[source][target] = true;
-            matrix[target][source] = true;
-
-            nodes[source].degree += weight;
-            nodes[target].degree += weight;
+    links = [];
+    for (var source in linkMatrix) {
+        for (var target in linkMatrix[source]) {
+            if (linkMatrix[source][target]) {
+                links.push({
+                    source: source,
+                    target: target,
+                    w: linkMatrix[source][target],
+                })
+            }
         }
     }
 
@@ -572,7 +647,6 @@ function computeLinks() {
     // edgeList weights.
     scales.links.width.domain(d3.extent(weights));
     scales.links.opacity.domain(d3.extent(weights));
-
 }
 ////////////////////////////////////////////////////////////////////////////////
 // Compute the radius multipliers of the nodes, given the data and chosen parameters
@@ -1358,37 +1432,23 @@ function unHighlightNode(d) {
             .style("stroke", d3.rgb(255, 255, 255));
     }
 }
-// Highlight a node by showing its name next to it.
-// If the node has no name, show its index.  
+////////////////////////////////////////////////////////////////////////////////
+// shows node text which should be shown (because it matches the current match
+// string or because we're showing all nodes)
+// hides 'em when they should be hidden
+////////////////////////////////////////////////////////////////////////////////
 function showAppropriateNodeText() {
     for (var i in nodes) {
         var node = nodes[i];
-        var name = node.name;
-        var text = name == undefined ? node.idx : name;
+        var text = node.name == undefined ? node.idx : node.name;
 
-        var shouldShowNodeText = false;
-
-        var nameToMatch = display.nameToMatch;
-        if (nameToMatch !== undefined && nameToMatch.length > 0) {
-            if (name.indexOf(nameToMatch) >= 0) {
-                shouldShowNodeText = true;
-            }
-        }
-
-        if (display.showNodeNames !== undefined && display.showNodeNames) {
-            shouldShowNodeText = true;
-        }
-
-        if (shouldShowNodeText) {
+        if (nodeNameMatches(node) || getTruthinessSafely(display.showNodeNames)) {
             showOneNodeText(node);
         }
         else {
             hideOneNodeText(node);
         }
     }
-}
-function hideOneNodeText(node) {
-    vis.selectAll("#nodeTextId-" + node.idx).remove();
 }
 function showOneNodeText(node) {
     var name = node.name;
@@ -1409,8 +1469,9 @@ function showOneNodeText(node) {
     }
 
 }
-// guess!
-// (Removes a node's text)
+function hideOneNodeText(node) {
+    vis.selectAll("#nodeTextId-" + node.idx).remove();
+}
 function hideAllNodeText() {
     vis.selectAll(".nodeText").remove();
 }
@@ -1742,7 +1803,7 @@ function writeGravityWidget(parent) {
 function writeRadiusWidget(parent) {
     var radiusWidget = parent.append("div")
         .attr("id", "radiusWidget")
-        .text("Node r: ");
+        .text("Node radius: ");
 
     radiusWidget.append("input")
         .attr("id","rText")
@@ -1760,7 +1821,7 @@ function writeMatchWidget(parent) {
         .attr("id","matchText")
         .attr("type", "text")
         .attr("value", display.nameToMatch)
-        .attr("onchange", "matchNodesNamed(this.value)")
+        .attr("oninput", "matchNodesNamed(this.value)")
         .attr("size", 10);
 }
 function writeShowNodeNamesWidget(parent) {
@@ -1783,7 +1844,7 @@ function writeShowNodeNamesWidget(parent) {
 function writeMenus(container) {
     var menu = document.createElement('div')
     menu.setAttribute('id', 'webweb-menu')
-    menu.style.display = display.hideMenu !== undefined ? 'none' : 'block';
+    menu.style.display = display.hideMenu == true ? 'none' : 'block';
     container.appendChild(menu);
 
     var menu = d3.select('#webweb-menu');
@@ -1879,6 +1940,13 @@ function getObjetPropertyCount(_object) {
         }
     }
     return count;
+}
+function getTruthinessSafely(variable) {
+    if (variable !== undefined && variable == true) {
+        return true;
+    }
+
+    return false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 //

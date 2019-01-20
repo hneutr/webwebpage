@@ -1,0 +1,23 @@
+[
+    "% define an edge list\n",
+    "edge_list = [...\n",
+    "    1, 2;\n",
+    "    2, 3;\n",
+    "    2, 4;\n",
+    "    3, 4;\n",
+    "    ];\n",
+    "% define names for the nodes\n",
+    "names = {'Dan','Hunter','Brian','Carl'};\n",
+    "\n",
+    "% put the edge list and names into a webweb struct called ww\n",
+    "ww.networks.network.edgeList = edge_list;\n",
+    "ww.display.metadata.name.values = names;\n",
+    "\n",
+    "% put some boolean metadata into the same struct\n",
+    "wearsGlasses = [1,1,1,0];\n",
+    "ww.display.metadata.wearsGlasses.values = wearsGlasses;\n",
+    "ww.display.metadata.wearsGlasses.type   = 'binary';\n",
+    "\n",
+    "% call webweb\n",
+    "webweb(ww);"
+]

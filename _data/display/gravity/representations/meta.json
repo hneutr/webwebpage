@@ -1,0 +1,13 @@
+[
+    "---\n",
+    "name: gravity\n",
+    "synonyms: g\n",
+    "type: positive non-zero float\n",
+    "default: .1\n",
+    "\n",
+    "---\n",
+    "\n",
+    "we can change the strength of the force pulling nodes to the center.\n",
+    "\n",
+    "the greater the value for `gravity`, the more nodes will be drawn to the center."
+]

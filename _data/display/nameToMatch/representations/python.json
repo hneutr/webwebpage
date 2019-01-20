@@ -20,5 +20,6 @@
     "\n",
     "web.display.nameToMatch = 'Pierot'\n",
     "\n",
-    "web.draw()"
+    "# show the visualization\n",
+    "web.show()"
 ]

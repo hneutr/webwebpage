@@ -15,6 +15,6 @@
     "# we'll scale edge widths by weight to create a visual difference\n",
     "web.display.scaleLinkWidth = True\n",
     "\n",
-    "# open the browser with the result\n",
-    "web.draw()"
+    "# show the visualization\n",
+    "web.show()"
 ]

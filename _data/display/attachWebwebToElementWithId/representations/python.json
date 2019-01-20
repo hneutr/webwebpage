@@ -7,6 +7,6 @@
     "# attach the visualization to a given element (no '#')\n",
     "web.display.attachWebwebToElementWithId = 'myElement'\n",
     "\n",
-    "# Launch webbrowser with result\n",
-    "web.draw()"
+    "# show the visualization\n",
+    "web.show()"
 ]

@@ -7,7 +7,6 @@
     "# hide webweb's menus\n",
     "web.display.hideMenu = True\n",
     "\n",
-    "# Launch webbrowser with result\n",
-    "web.draw()\n",
-    ""
+    "# show the visualization\n",
+    "web.show()"
 ]

@@ -8,6 +8,6 @@
     "# create the web\n",
     "web = Web(edge_list)\n",
     "\n",
-    "# open the browser with the result\n",
-    "web.draw()"
+    "# show the visualization\n",
+    "web.show()"
 ]

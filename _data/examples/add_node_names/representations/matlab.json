@@ -1,0 +1,18 @@
+[
+    "% define a couple edges\n",
+    "edges = [...\n",
+    "    1,2;\n",
+    "    2,3;...\n",
+    "    ];\n",
+    "% Place the edges in a webweb struct called ww\n",
+    "ww.networks.network.edgeList = edges;\n",
+    "\n",
+    "% Define some names in an array of cells containing strings\n",
+    "names = {'Huberg','Pierot','Slartibertfast'};\n",
+    "\n",
+    "% Put the names in metadata with the special key \"names\"\n",
+    "ww.display.metadata.name.values = names;\n",
+    "\n",
+    "% Call webweb\n",
+    "webweb(ww)"
+]

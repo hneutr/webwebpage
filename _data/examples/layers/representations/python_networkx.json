@@ -39,5 +39,6 @@
     "# we'll compute node size by the `isHead` attribute\n",
     "web.display.sizeBy = 'isHead'\n",
     "\n",
-    "web.draw()"
+    "# show the visualization\n",
+    "web.show()"
 ]

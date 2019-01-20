@@ -1,0 +1,11 @@
+[
+    "---\n",
+    "name: linkLength\n",
+    "synonyms: l\n",
+    "type: positive non-zero integer\n",
+    "default: 20\n",
+    "\n",
+    "---\n",
+    "\n",
+    "we can change the length of link edges by setting the `display.linkLength` parameter."
+]

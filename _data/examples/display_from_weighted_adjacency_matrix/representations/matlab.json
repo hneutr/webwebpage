@@ -1,0 +1,17 @@
+[
+    "% define a weighted adjacency matrix\n",
+    "adjacency_matrix = [...\n",
+    "    0, .1, 0, 0, 0;...\n",
+    "    .1, 0, .5, 0, 0;...\n",
+    "    0, .5, 0, 1, 0;...\n",
+    "    0, 0, 1, 0, 2;...\n",
+    "    0, 0, 0, 2, 0;...\n",
+    "];\n",
+    "\n",
+    "% call webweb\n",
+    "webweb(adjacency_matrix);\n",
+    "\n",
+    "% [OPTIONAL] set webweb's display default: show weighted edges.\n",
+    "\n",
+    "% DBL TODO"
+]

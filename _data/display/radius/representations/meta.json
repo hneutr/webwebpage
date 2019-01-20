@@ -1,0 +1,11 @@
+[
+    "---\n",
+    "name: radius\n",
+    "synonyms: r\n",
+    "type: positive non-zero float\n",
+    "default: 5\n",
+    "\n",
+    "---\n",
+    "\n",
+    "we can change the radius of the nodes by setting the `display.radius` parameter."
+]

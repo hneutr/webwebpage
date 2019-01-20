@@ -1,0 +1,13 @@
+[
+    "---\n",
+    "name: charge\n",
+    "synonyms: c\n",
+    "type: positive non-zero integer\n",
+    "default: 60\n",
+    "\n",
+    "---\n",
+    "\n",
+    "we can change how much nodes repulse each other.\n",
+    "\n",
+    "the greater the value for `charge`, the more nodes will repel each other."
+]
