@@ -1,21 +1,22 @@
 ---
+grand_parent: documentation
 layout: home
-nav_order: 3
+nav_order: 18
 parent: display
-title: colorBy
+title: scaleLinkWidth
 
 ---
 
-{% include webweb.html webweb_json=site.data.display.colorBy.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.scaleLinkWidth.json %}
 
-any metadata attribute can be used to compute node size.
+link widths can be scaled by weight.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}
 <div class='select-code-block example-code-switcher python-code-block select-code-block-visible'></div>
 ```python
-{{site.data.display.colorBy.representations.python}}
+{{site.data.documentation.display.scaleLinkWidth.representations.python}}
 ```
 <div class='select-code-block example-code-switcher json-code-block'></div>
 ```json
-{{site.data.display.colorBy.representations.json}}
+{{site.data.documentation.display.scaleLinkWidth.representations.json}}
 ```

@@ -32,18 +32,19 @@ def get_examples_map(input_dir):
 
     return file_map
 
-def examplify(input_dir, data_output_dir, pages_output_dir, collection_name, nav_order=0):
+def examplify(input_dir, data_output_dir, pages_output_dir, container, nav_order=0, parent_container=None):
     util.clean_dir(pages_output_dir)
     util.clean_dir(data_output_dir)
 
     examples_map = get_examples_map(input_dir)
 
     util.Index(
-        title=collection_name,
-        writeable_title=collection_name,
+        title=container,
+        writeable_title=container,
         nav_order=nav_order,
         layout='main_page',
         has_children=True,
+        parent=parent_container,
     ).write(pages_output_dir)
 
     ordered_examples_map = sorted(examples_map.items(), key=lambda x: x[0])
@@ -52,18 +53,20 @@ def examplify(input_dir, data_output_dir, pages_output_dir, collection_name, nav
         Example(
             writeable_name=name,
             language_to_file_map=language_to_file_map,
-            parent=collection_name,
             example_number=i + 1,
+            container=container,
+            parent_container=parent_container,
         ).write(
             page_directory=pages_output_dir,
             data_directory=data_output_dir,
         )
 
 class Example(object):
-    def __init__(self, writeable_name, language_to_file_map, parent, example_number):
+    def __init__(self, writeable_name, language_to_file_map, example_number, container, parent_container=None):
         self.writeable_name = writeable_name
         self.language_to_file_map = language_to_file_map
-        self.parent = parent
+        self.container = container
+        self.parent_container = parent_container
         self.example_number = example_number
         self.read_meta()
 
@@ -210,16 +213,15 @@ class Example(object):
         return "\n".join(extra_content)
 
     def write_page(self):
-        page = util.Page(
+        util.Page(
             title=self.title,
             writeable_title=self.writeable_name,
             layout='home',
-            parent=self.parent,
             content=self.content,
+            parent=self.container,
+            grand_parent=self.parent_container,
             nav_order=getattr(self, 'nav_order', self.example_number),
-        )
-
-        page.write(self.page_directory)
+        ).write(self.page_directory)
 
     def get_representations_select(self):
         # display code in a consistent order
@@ -245,10 +247,22 @@ class Example(object):
     def writeable_representation(self, representation):
         return re.sub(r'\W+', '', representation.replace(' ', '_'))
 
+    @property
+    def data_path(self):
+        path_parts = ['site.data']
+
+        if self.parent_container:
+            path_parts.append(self.parent_container)
+
+        path_parts.append(self.container)
+        path_parts.append(self.writeable_name)
+
+        return ".".join(path_parts)
+
+
     def get_representation_select_option(self, representation):
-        representation_content_path = 'site.data.{parent}.{name}.representations.{representation}'.format(
-            parent=self.parent,
-            name=self.writeable_name,
+        representation_content_path = "{data_path}.representations.{representation}".format(
+            data_path=self.data_path,
             representation=self.writeable_representation(representation),
         )
 
@@ -277,7 +291,7 @@ class Example(object):
         return "\n".join([div, content])
 
     def get_webweb_visualization(self):
-        return "{{% include webweb.html webweb_json=site.data.{parent}.{name}.json %}}\n".format(
-            parent=self.parent,
+        return "{{% include webweb.html webweb_json={data_path}.json %}}\n".format(
+            data_path=self.data_path,
             name=self.writeable_name,
         )

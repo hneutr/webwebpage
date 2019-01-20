@@ -22,8 +22,8 @@ DOCUMENTATION_PAGES_OUTPUT_DIR = os.path.join(os.getcwd(), 'docs', 'documentatio
 
 DISPLAY_INPUT_DIR = os.path.join(os.getcwd(), 'webweb', 'docs', 'display')
 
-DISPLAY_DATA_OUTPUT_DIR = os.path.join(os.getcwd(), '_data', 'display')
-DISPLAY_PAGES_OUTPUT_DIR = os.path.join(os.getcwd(), 'docs', 'display')
+DISPLAY_DATA_OUTPUT_DIR = os.path.join(os.getcwd(), '_data', 'documentation', 'display')
+DISPLAY_PAGES_OUTPUT_DIR = os.path.join(os.getcwd(), 'docs', 'documentation', 'display')
 
 PYDOC_PAGES_OUTPUT_DIR = os.path.join(DOCUMENTATION_PAGES_OUTPUT_DIR, 'python')
 
@@ -75,7 +75,8 @@ def docutize(output_dir):
         data_output_dir=DISPLAY_DATA_OUTPUT_DIR,
         pages_output_dir=DISPLAY_PAGES_OUTPUT_DIR,
         nav_order=1,
-        collection_name='display',
+        container='display',
+        parent_container='documentation'
     )
 
     py_output_dir = os.path.join(output_dir, 'python')
@@ -167,12 +168,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     args = parser.parse_args()
 
-    # refresh_webweb()
-    # examplify(
-    #     input_dir=EXAMPLES_INPUT_DIR,
-    #     data_output_dir=EXAMPLES_DATA_OUTPUT_DIR,
-    #     pages_output_dir=EXAMPLES_PAGES_OUTPUT_DIR,
-    #     nav_order=3,
-    #     collection_name='examples',
-    # )
+    refresh_webweb()
+    examplify(
+        input_dir=EXAMPLES_INPUT_DIR,
+        data_output_dir=EXAMPLES_DATA_OUTPUT_DIR,
+        pages_output_dir=EXAMPLES_PAGES_OUTPUT_DIR,
+        nav_order=3,
+        container='examples',
+    )
     docutize(DOCUMENTATION_PAGES_OUTPUT_DIR)

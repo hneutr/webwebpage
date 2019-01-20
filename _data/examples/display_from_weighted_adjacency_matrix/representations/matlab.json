@@ -11,7 +11,16 @@
     "% call webweb\n",
     "webweb(adjacency_matrix);\n",
     "\n",
-    "% [OPTIONAL] set webweb's display default: show weighted edges.\n",
-    "\n",
-    "% DBL TODO"
+    "%% [OPTIONAL] Set default: show weighted edges.\n",
+    "% To set a default parameter, we need to creat a webweb struct\n",
+    "% and place our parameter setting in it.\n",
+    "%\n",
+    "% Convert from the matrix to an edgeList.\n",
+    "[from,to,weight] = find(triu(adjacency_matrix));\n",
+    "% Place this edgeList into a network within the webweb struct\n",
+    "ww.networks.network.edgeList = [from,to,weight];\n",
+    "% Set scaleLinkWidth to True. \n",
+    "ww.display.scaleLinkWidth = 'True';\n",
+    "% call webweb\n",
+    "webweb(ww);"
 ]

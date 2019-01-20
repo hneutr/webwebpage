@@ -13,7 +13,7 @@
     "\n",
     "% Put them in the webweb struct\n",
     "ww.display.metadata.age.values = age;\n",
-    "ww.display.metadata.velocity.values = velocity\n",
+    "ww.display.metadata.velocity.values = velocity;\n",
     "\n",
     "% BONUS: ask webweb to use age for default node size\n",
     "%        ask webweb to use velocity for default node color\n",
