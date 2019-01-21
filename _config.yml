@@ -49,3 +49,5 @@ exclude:
   - vendor/ruby/
   - todo.md
   - webweb
+  - regenerate
+  - README.md
