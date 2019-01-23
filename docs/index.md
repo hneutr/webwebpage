@@ -22,7 +22,7 @@ a tool for creating, displaying, and sharing interactive network visualizations 
 
 ---
 
-## Alright, I have an adjacency matrix, how do I get this webweb thing to show it to me?
+## How do I run it?
 
 {% include code_switcher.html code_options="python---matlab" switcher_name="simple-code" %}
 
@@ -30,21 +30,21 @@ a tool for creating, displaying, and sharing interactive network visualizations 
 ```python
 from webweb import Web
 
-# Connect two nodes
-edge_list = [[0, 1]]
+# make a list of unweighted edges
+edge_list = [[1, 2], [2, 3], [3, 4]]
 
-# Instantiate webweb object
-web = Web(edge_list)
-
-# Launch webbrowser with result
-web.draw()
+# instantiate webweb and show the result
+Web(edge_list).show()
 ```
 <div class='select-code-block matlab-code-block simple-code'></div>
 ```matlab
-A = floor(1.01 * rand(100,100)); 
-A = A + A'; 
-A(A>0) = 1;
-webweb(A);
+% make a list of unweighted edges
+edge_list = [...
+    1, 2;
+    2, 3;
+    3, 4;
+    ];
+webweb(edge_list);
 ```
 
 ---
@@ -58,6 +58,5 @@ pip install webweb
 ```
 <div class='select-code-block matlab-code-block install-switcher'></div>
 ```matlab
-git clone //https://github.com/dblarremore/webweb
+git clone https://github.com/dblarremore/webweb
 ```
-
