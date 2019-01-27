@@ -27,3 +27,7 @@ The website is made using the static site-generator [jekyll](https://jekyllrb.co
 There's no good reason except time and the creators' own preferences -- webweb's built to be as simple as possible on the interface side, and if there's a language you'd like to see supported, build it! We're happy to help with the process.
 
 Really all an interface does is write a json file with a particular format into an html file with a particular format. Building an interface for webweb is as simple as mapping the three or four concepts webweb uses onto the given language. To see what kind of json that is, you can look at the `json` code snippets on every example page.
+
+## license
+
+GNU General Public License v3+
