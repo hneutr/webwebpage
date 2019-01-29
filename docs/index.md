@@ -6,23 +6,23 @@ permalink: /
 
 ---
 
-# webweb!
+# webweb
 
-a tool for creating, displaying, and sharing interactive network visualizations on the web designed for simplicity and ease of use.
+webweb is a tool for creating, displaying, and sharing interactive network visualizations on the web, designed for simplicity and ease of use. As an example, here's a network of character co-occurrences constructed by [Hunter Wapman](http://hneutr.github.io/) from the novel _Infinite Jest_.
 
 {% include webweb.html webweb_json=site.data.infinite_jest responsive=true %}
 
 ## features
 
-- simple and configurable model
-- easy to share (one file, no dependencies)
+- simple, lightweight, intuitive, and configurable
+- `python`, `networkx`, and `MATLAB` support
+- easy to share (one html file, no dependencies)
 - easy to embed
-- does what you need it to (multiple networks, layered networks)
-- interfaces for multiple languages (`python`, `MATLAB`) and libraries (`networkx`)
+- supports metadata, communities, weighted, and multi-layer networks
 
 ---
 
-## How do I run it?
+## the simplest example
 
 {% include code_switcher.html code_options="python---matlab" switcher_name="simple-code" %}
 
@@ -49,7 +49,7 @@ webweb(edge_list);
 
 ---
 
-## How do I install it?
+## installation
 
 {% include code_switcher.html code_options="python---matlab" switcher_name="install-switcher" %}
 <div class='select-code-block python-code-block select-code-block-visible install-switcher'></div>
