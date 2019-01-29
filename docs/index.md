@@ -18,7 +18,7 @@ webweb is a tool for creating, displaying, and sharing interactive network visua
 - `python`, `networkx`, and `MATLAB` support
 - easy to share (one html file, no dependencies)
 - easy to embed
-- supports metadata, communities, weighted, and multi-layer networks
+- supports metadata, communities, weighted networks, and multi-layer networks
 
 ---
 
