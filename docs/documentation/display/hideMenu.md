@@ -9,10 +9,10 @@ title: hideMenu
 
 {% include webweb.html webweb_json=site.data.documentation.display.hideMenu.json %}
 
-```type```: boolean
-
-```default```: false
-
+```json
+type: boolean
+default: false
+````
 If `true`, webweb's interactive menu will be hidden and only the network visualization will be shown.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}

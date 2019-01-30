@@ -9,10 +9,10 @@ title: colorBy
 
 {% include webweb.html webweb_json=site.data.documentation.display.colorBy.json %}
 
-```type```: string
-
-```default```: 'none'
-
+```json
+type: string
+default: 'none'
+````
 we can color nodes by a metadata attribute by setting the `colorBy` parameter to that attribute's name.
 
 

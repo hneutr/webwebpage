@@ -86,7 +86,7 @@ def docutize(output_dir):
 def pydocutize(output_dir, parent, nav_order):
     functions_mapping = {
         'Web' : {
-            'display_name' : 'Web',
+            'display_name' : 'webweb.Web',
             'functions' : [
                 '__init__',
                 'show',
@@ -94,7 +94,7 @@ def pydocutize(output_dir, parent, nav_order):
             ],
         },
         'Network' : {
-            'display_name' : 'Web.networks.name',
+            'display_name' : 'webweb.Network',
             'functions' : [
                 '__init__',
                 'add_layer',
@@ -109,6 +109,9 @@ def pydocutize(output_dir, parent, nav_order):
 
     container = 'python'
 
+    with open('python_documentation.md', 'r') as f:
+        index_content = f.read()
+
     util.Index(
         title=container,
         writeable_title=container,
@@ -116,7 +119,7 @@ def pydocutize(output_dir, parent, nav_order):
         layout='main_page',
         has_children=True,
         parent=parent,
-        content="full documentation for the python code."
+        content=index_content,
     ).write(output_dir)
 
     counter = 1

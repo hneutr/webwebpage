@@ -195,20 +195,22 @@ class Example(object):
 
     def get_extra_content(self):
         key_ordering = ['type', 'synonyms', 'default']
-        extra_content = []
+        extra_content = ["```json"]
         for key in key_ordering:
             value = self.extra.get(key, None)
             if value:
-                line = "```{0}```: ".format(key)
+                line = "{0}: ".format(key)
 
                 if util.is_int(value):
-                    line += "```{0}```".format(int(value))
+                    line += "{0}".format(int(value))
                 elif util.is_float(value):
-                    line += "```{0}```".format(float(value))
+                    line += "{0}".format(float(value))
                 else:
                     line += value
 
-                extra_content.append(line + "\n")
+                extra_content.append(line)
+
+        extra_content.append("````")
 
         return "\n".join(extra_content)
 

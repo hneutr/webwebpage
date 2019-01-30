@@ -9,12 +9,11 @@ title: charge
 
 {% include webweb.html webweb_json=site.data.documentation.display.charge.json %}
 
-```type```: positive non-zero integer
-
-```synonyms```: c
-
-```default```: ```60```
-
+```json
+type: positive non-zero integer
+synonyms: c
+default: 60
+````
 we can change how much nodes repulse each other.
 
 

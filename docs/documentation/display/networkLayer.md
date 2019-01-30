@@ -9,10 +9,10 @@ title: networkLayer
 
 {% include webweb.html webweb_json=site.data.documentation.display.networkLayer.json %}
 
-```type```: positive integer (an index)
-
-```default```: ```0```
-
+```json
+type: positive integer (an index)
+default: 0
+````
 webweb will by default display the first layer, but if we'd like to show a particular one we can do so by setting the `display.networkLayer` property to the index of the layer we want to show.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}

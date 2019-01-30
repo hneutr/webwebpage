@@ -3,12 +3,12 @@ grand_parent: documentation
 layout: main_page
 nav_order: 2
 parent: python
-title: Web.show
+title: webweb.Web.show
 
 ---
 
 ```python
-Web.show()
+webweb.Web.show()
 ````
 
 display the webweb visualization.

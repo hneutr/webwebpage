@@ -9,12 +9,11 @@ title: gravity
 
 {% include webweb.html webweb_json=site.data.documentation.display.gravity.json %}
 
-```type```: positive non-zero float
-
-```synonyms```: g
-
-```default```: ```0.1```
-
+```json
+type: positive non-zero float
+synonyms: g
+default: 0.1
+````
 we can change the strength of the force pulling nodes to the center.
 
 

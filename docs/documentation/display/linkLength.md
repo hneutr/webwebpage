@@ -9,12 +9,11 @@ title: linkLength
 
 {% include webweb.html webweb_json=site.data.documentation.display.linkLength.json %}
 
-```type```: positive non-zero integer
-
-```synonyms```: l
-
-```default```: ```20```
-
+```json
+type: positive non-zero integer
+synonyms: l
+default: 20
+````
 we can change the length of link edges by setting the `display.linkLength` parameter.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}

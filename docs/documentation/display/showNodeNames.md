@@ -9,10 +9,10 @@ title: showNodeNames
 
 {% include webweb.html webweb_json=site.data.documentation.display.showNodeNames.json %}
 
-```type```: boolean
-
-```default```: false
-
+```json
+type: boolean
+default: false
+````
 we can show all node names by setting the `showNodeNames` parameter.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}

@@ -163,13 +163,7 @@ function writeVisualization(container) {
     }
 
     if (display.h == undefined) {
-        var heuristic = container.clientHeight - 3 * 20;
-
-        if (heuristic <= 0) {
-            heuristic = 600;
-        }
-
-        display.h = Math.min.apply(null, [heuristic, 600, display.w]);
+        display.h = Math.min.apply(null, [display.w, 600]);
     }
     vis = d3.select("#webweb-visualization-container")
         .append("svg")
@@ -184,8 +178,6 @@ function standardizeRepresentation() {
     for (var i in networkNames) {
         standardizeNetworkRepresentation(networkNames[i]);
     }
-
-    // display.nodes = addMetadataVectorsToNodes(display.metadata, display.nodes);
 }
 function standardizeNetworkRepresentation(networkName) {
     var network = wwdata.networks[networkName];
@@ -223,8 +215,6 @@ function standardizeLayerRepresentation(layer) {
             }
 
         }
-
-        // layer.nodes = addMetadataVectorsToNodes(layer.metadata, layer.nodes);
     }
 
     return layer;
@@ -748,6 +738,7 @@ function computeColors() {
         // values for the metadatum
         if (metadatum.categories == undefined) {
             colorData['categoryNames'] = d3.set(rawValues).values().sort();
+
             categoryValues = colorData['categoryNames'];
         }
         else {
@@ -771,9 +762,15 @@ function computeColors() {
         // actually check how many colors there are in the user's selected
         // colorbrewer
         // update the list for this...
-        if (categoryValues.length <= 9) {
+        var categoryValuesCount = categoryValues.length;
+        if (categoryValuesCount <= 9) {
+            // make sure there's enough categories even if there aren't
+            if (categoryValuesCount == 1) {
+                categoryValuesCount += 1;
+            }
+
             scales.colors.categorical.domain(categoryValues)
-                .range(colorbrewer[display.colorPalette][categoryValues.length]);
+                .range(colorbrewer[display.colorPalette][categoryValuesCount]);
 
             changeColorPaletteMenuVisibility(true);
         }
@@ -1850,7 +1847,7 @@ function writeShowNodeNamesWidget(parent) {
 function writeMenus(container) {
     var menu = document.createElement('div')
     menu.setAttribute('id', 'webweb-menu')
-    menu.style.display = display.hideMenu == true ? 'none' : 'block';
+    menu.style.display = display.hideMenu == true ? 'none' : 'flex';
     container.appendChild(menu);
 
     var menu = d3.select('#webweb-menu');

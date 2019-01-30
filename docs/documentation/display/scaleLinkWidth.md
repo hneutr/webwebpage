@@ -9,10 +9,10 @@ title: scaleLinkWidth
 
 {% include webweb.html webweb_json=site.data.documentation.display.scaleLinkWidth.json %}
 
-```type```: boolean
-
-```default```: false
-
+```json
+type: boolean
+default: false
+````
 we can scale link widths by their weight by setting the `scaleLinkWidth` parameter.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}

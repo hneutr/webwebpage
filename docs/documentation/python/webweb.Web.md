@@ -3,12 +3,12 @@ grand_parent: documentation
 layout: main_page
 nav_order: 1
 parent: python
-title: Web
+title: webweb.Web
 
 ---
 
 ```python
-Web(adjacency=None, title='webweb', display={}, **kwargs)
+webweb.Web(adjacency=[], title='webweb', display={}, **kwargs)
 ````
 
 a webweb object. 

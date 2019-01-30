@@ -9,12 +9,11 @@ title: radius
 
 {% include webweb.html webweb_json=site.data.documentation.display.radius.json %}
 
-```type```: positive non-zero float
-
-```synonyms```: r
-
-```default```: ```5```
-
+```json
+type: positive non-zero float
+synonyms: r
+default: 5
+````
 we can change the radius of the nodes by setting the `display.radius` parameter.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}

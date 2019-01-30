@@ -9,10 +9,10 @@ title: width
 
 {% include webweb.html webweb_json=site.data.documentation.display.width.json %}
 
-```type```: positive non-zero float
-
-```synonyms```: w
-
+```json
+type: positive non-zero float
+synonyms: w
+````
 we can change the width of the visualization by setting the `display.width` property.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}

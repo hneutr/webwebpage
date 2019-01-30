@@ -9,10 +9,10 @@ title: scaleLinkOpacity
 
 {% include webweb.html webweb_json=site.data.documentation.display.scaleLinkOpacity.json %}
 
-```type```: boolean
-
-```default```: false
-
+```json
+type: boolean
+default: false
+````
 we can scale link opacities by their weight by setting the `scaleLinkOpacity` parameter.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}

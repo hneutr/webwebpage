@@ -9,10 +9,10 @@ title: sizeBy
 
 {% include webweb.html webweb_json=site.data.documentation.display.sizeBy.json %}
 
-```type```: string
-
-```default```: 'none'
-
+```json
+type: string
+default: 'none'
+````
 we can compute node radii by a metadata attribute by setting the `sizeBy` parameter to that attribute's name.
 
 

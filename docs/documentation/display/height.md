@@ -9,10 +9,10 @@ title: height
 
 {% include webweb.html webweb_json=site.data.documentation.display.height.json %}
 
-```type```: positive non-zero integer
-
-```synonyms```: h
-
+```json
+type: positive non-zero integer
+synonyms: h
+````
 we can change the height of the visualization by setting the `display.height` property.
 
 {% include code_switcher.html code_options="python---json" switcher_name="example-code-switcher" %}
