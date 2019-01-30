@@ -5,7 +5,7 @@ nav_order: 2
 permalink: /getting-started/
 ---
 
-## Installation
+## installation
 
 {% include code_switcher.html code_options="python---matlab" switcher_name="install-switcher" %}
 <div class='select-code-block python-code-block select-code-block-visible install-switcher'></div>
@@ -19,7 +19,7 @@ git clone https://github.com/dblarremore/webweb
 
 ---
 
-## The simplest example
+## the simplest example
 
 {% include code_switcher.html code_options="python---matlab" switcher_name="simple-code" %}
 
