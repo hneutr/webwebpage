@@ -8,7 +8,7 @@ title: webweb.Network
 ---
 
 ```python
-webweb.Network()
+webweb.Network(**kwargs)
 ````
 
 a webweb Network object

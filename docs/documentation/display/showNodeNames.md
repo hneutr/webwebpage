@@ -7,7 +7,7 @@ title: showNodeNames
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.showNodeNames.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.showNodeNames.json fix_width=false fix_height=false %}
 
 ```json
 type: boolean

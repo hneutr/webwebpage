@@ -1,17 +1,6 @@
 {
     "display": {
-        "colorBy": "wearsContacts",
-        "metadata": {
-            "wearsContacts": {
-                "values": [
-                    true,
-                    false,
-                    true,
-                    false,
-                    false
-                ]
-            }
-        },
+        "colorBy": "wearsGlasses",
         "nodes": {
             "Brian": {
                 "wearsGlasses": true
@@ -24,8 +13,7 @@
             },
             "Hunter": {
                 "wearsGlasses": true
-            },
-            "Tzu-Chi": {}
+            }
         },
         "sizeBy": "wearsGlasses"
     },

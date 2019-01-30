@@ -7,7 +7,7 @@ title: linkLength
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.linkLength.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.linkLength.json fix_width=false fix_height=false %}
 
 ```json
 type: positive non-zero integer

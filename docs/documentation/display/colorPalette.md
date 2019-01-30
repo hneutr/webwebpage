@@ -7,7 +7,7 @@ title: colorPalette
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.colorPalette.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.colorPalette.json fix_width=false fix_height=false %}
 
 ```json
 type: string

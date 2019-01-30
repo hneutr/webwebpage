@@ -7,7 +7,7 @@ title: networkLayer
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.networkLayer.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.networkLayer.json fix_width=false fix_height=false %}
 
 ```json
 type: positive integer (an index)

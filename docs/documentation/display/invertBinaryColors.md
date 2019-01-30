@@ -7,7 +7,7 @@ title: invertBinaryColors
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.invertBinaryColors.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.invertBinaryColors.json fix_width=false fix_height=false %}
 
 ```json
 type: boolean

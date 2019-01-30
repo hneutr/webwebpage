@@ -7,7 +7,7 @@ title: height
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.height.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.height.json fix_width=false fix_height=true %}
 
 ```json
 type: positive non-zero integer

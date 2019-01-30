@@ -6,7 +6,7 @@ title: display from weighted edge list
 
 ---
 
-{% include webweb.html webweb_json=site.data.examples.display_from_weighted_edge_list.json %}
+{% include webweb.html webweb_json=site.data.examples.display_from_weighted_edge_list.json fix_width=false fix_height=false %}
 
 if the edge list we pass has multiple edges between two nodes, the weight of the edge webweb creates between those two nodes will be the sum of those edges' weights.
 

@@ -235,7 +235,7 @@ class Example(object):
             return
 
         select_include = '{{% include code_switcher.html code_options="{options}" switcher_name="example-code-switcher" %}}'.format(
-            options="---".join(ordered_representations)
+            options="---".join(ordered_representations),
         )
 
         representation_options = []
@@ -293,7 +293,9 @@ class Example(object):
         return "\n".join([div, content])
 
     def get_webweb_visualization(self):
-        return "{{% include webweb.html webweb_json={data_path}.json %}}\n".format(
+        return "{{% include webweb.html webweb_json={data_path}.json fix_width={fix_width} fix_height={fix_height} %}}\n".format(
             data_path=self.data_path,
             name=self.writeable_name,
+            fix_width=self.extra.get('fix_width', 'false'),
+            fix_height=self.extra.get('fix_height', 'false')
         )

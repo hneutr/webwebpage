@@ -6,7 +6,7 @@ title: display from adjacency matrix
 
 ---
 
-{% include webweb.html webweb_json=site.data.examples.display_from_adjacency_matrix.json %}
+{% include webweb.html webweb_json=site.data.examples.display_from_adjacency_matrix.json fix_width=false fix_height=false %}
 
 webweb'll guess whether you've given it an edge list or adjacency matrix.
 

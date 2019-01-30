@@ -12,7 +12,7 @@ full documentation for the python code.
 
 ---
 
-you interact with webwe in via the `webweb.Web` object, which has the following attributes:
+you interact with webweb via the `webweb.Web` object, which has the following attributes:
 
 - display: dictionary of webweb display parameters; see the [display](/documentation/display/) documentation
 - networks: a dictionary of `webweb.Network` objects
@@ -33,7 +33,11 @@ a python `webweb.Network` object has the following attributes:
         ...
     },
     'metadata' : {
-
+        'attribute3' : {
+            'values' : [1, 2, ...],
+            ...
+        },
+        ...
     },
 }
 ```

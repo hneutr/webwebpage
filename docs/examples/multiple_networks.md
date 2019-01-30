@@ -6,7 +6,7 @@ title: multiple networks
 
 ---
 
-{% include webweb.html webweb_json=site.data.examples.multiple_networks.json %}
+{% include webweb.html webweb_json=site.data.examples.multiple_networks.json fix_width=false fix_height=false %}
 
 you can give webweb more than one network and toggle between those networks with the up and down arrow keys.
 

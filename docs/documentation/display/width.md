@@ -7,7 +7,7 @@ title: width
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.width.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.width.json fix_width=true fix_height=false %}
 
 ```json
 type: positive non-zero float

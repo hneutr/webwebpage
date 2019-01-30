@@ -7,7 +7,7 @@ title: invertBinarySizes
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.invertBinarySizes.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.invertBinarySizes.json fix_width=false fix_height=false %}
 
 ```json
 type: boolean

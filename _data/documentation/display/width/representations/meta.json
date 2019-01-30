@@ -3,6 +3,7 @@
     "name: width\n",
     "synonyms: w\n",
     "type: positive non-zero float\n",
+    "fix_width: true\n",
     "\n",
     "---\n",
     "\n",

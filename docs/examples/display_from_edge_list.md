@@ -6,7 +6,7 @@ title: display from edge list
 
 ---
 
-{% include webweb.html webweb_json=site.data.examples.display_from_edge_list.json %}
+{% include webweb.html webweb_json=site.data.examples.display_from_edge_list.json fix_width=false fix_height=false %}
 
 {% include code_switcher.html code_options="python---python (networkx)---matlab---json" switcher_name="example-code-switcher" %}
 <div class='select-code-block example-code-switcher python-code-block select-code-block-visible'></div>

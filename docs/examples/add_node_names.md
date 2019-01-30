@@ -6,7 +6,7 @@ title: add node names
 
 ---
 
-{% include webweb.html webweb_json=site.data.examples.add_node_names.json %}
+{% include webweb.html webweb_json=site.data.examples.add_node_names.json fix_width=false fix_height=false %}
 
 we can add node names by setting the `nodes` attribute in the `display` variable
 

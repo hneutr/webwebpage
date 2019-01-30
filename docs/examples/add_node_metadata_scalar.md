@@ -6,7 +6,7 @@ title: 'add node metadata: scalar'
 
 ---
 
-{% include webweb.html webweb_json=site.data.examples.add_node_metadata_scalar.json %}
+{% include webweb.html webweb_json=site.data.examples.add_node_metadata_scalar.json fix_width=false fix_height=false %}
 
 If nodes are indexes, we can add metadata as a vector, like we've done here for the `velocity` attribute. A node's value for this attribute will be the value at its id's index in this array.
 

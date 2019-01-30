@@ -6,7 +6,7 @@ title: display from weighted adjacency matrix
 
 ---
 
-{% include webweb.html webweb_json=site.data.examples.display_from_weighted_adjacency_matrix.json %}
+{% include webweb.html webweb_json=site.data.examples.display_from_weighted_adjacency_matrix.json fix_width=false fix_height=false %}
 
 if the adjacency matrix we pass has multiple edges between two nodes, the weight of the edge webweb creates between those two nodes will be the sum of those edges' weights. However, webweb won't do this with symmetric matrices.
 

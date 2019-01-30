@@ -7,7 +7,7 @@ title: scaleLinkOpacity
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.scaleLinkOpacity.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.scaleLinkOpacity.json fix_width=false fix_height=false %}
 
 ```json
 type: boolean

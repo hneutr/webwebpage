@@ -7,7 +7,7 @@ title: charge
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.charge.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.charge.json fix_width=false fix_height=false %}
 
 ```json
 type: positive non-zero integer

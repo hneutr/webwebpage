@@ -7,7 +7,7 @@ title: radius
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.radius.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.radius.json fix_width=false fix_height=false %}
 
 ```json
 type: positive non-zero float

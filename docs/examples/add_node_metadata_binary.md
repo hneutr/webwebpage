@@ -6,7 +6,7 @@ title: 'add node metadata: binary'
 
 ---
 
-{% include webweb.html webweb_json=site.data.examples.add_node_metadata_binary.json %}
+{% include webweb.html webweb_json=site.data.examples.add_node_metadata_binary.json fix_width=false fix_height=false %}
 
 webweb'll display a metadata attribute as binary if every node's value for that attribute is either `True` or `False`.
 

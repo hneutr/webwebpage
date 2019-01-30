@@ -13,6 +13,7 @@ webweb.Network.add_layer(adjacency=[], adjacency_type=None, nodes=None, metadata
 
 adds a layer to the network.
 
+parameters:
 - adjacency: edge list or adjacency matrix
 - adjacency_type: string. 'matrix' or 'edge list'
 - nodes: dict of node attribute dicts
@@ -51,7 +52,7 @@ nodes which appear in both the adjacency and as keys in the `nodes`
 dictionary will be given the values of the attributes under their
 corresponding key in the `nodes` dictionary
 
-you only need to pass the `adjacency_type` if your adjacency is
+`adjacency_type` only needs to be supplied if your adjacency is
 represented as a matrix and that matrix has 3 or fewer nodes
 
 call with at least one of:

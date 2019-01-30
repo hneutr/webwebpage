@@ -7,7 +7,7 @@ title: colorBy
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.colorBy.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.colorBy.json fix_width=false fix_height=false %}
 
 ```json
 type: string

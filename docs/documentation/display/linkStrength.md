@@ -7,7 +7,7 @@ title: linkStrength
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.linkStrength.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.linkStrength.json fix_width=false fix_height=false %}
 
 ```json
 type: positive non-zero float

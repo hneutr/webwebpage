@@ -3,6 +3,7 @@
     "name: height\n",
     "synonyms: h\n",
     "type: positive non-zero integer\n",
+    "fix_height: true\n",
     "\n",
     "---\n",
     "\n",

@@ -6,7 +6,7 @@ title: layers
 
 ---
 
-{% include webweb.html webweb_json=site.data.examples.layers.json %}
+{% include webweb.html webweb_json=site.data.examples.layers.json fix_width=false fix_height=false %}
 
 webweb supports adding layers to networks (think timeslices). You can more forward through these with the right arrow key and backwards with the left.
 

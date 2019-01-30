@@ -7,7 +7,7 @@ title: networkName
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.networkName.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.networkName.json fix_width=false fix_height=false %}
 
 ```json
 type: string

@@ -8,7 +8,9 @@ permalink: /
 
 # webweb
 
-webweb is a tool for creating, displaying, and sharing interactive network visualizations on the web, designed for simplicity and ease of use. As an example, here's a network of character co-occurrences constructed by [Hunter Wapman](http://hneutr.github.io/) from the novel _Infinite Jest_.
+webweb is a tool for creating, displaying, and sharing interactive network visualizations on the web, designed for simplicity and ease of use. With just a few lines of `python`, `networkx`, or `matlab`, webweb will build and launch a visualization in your browser.
+
+Here’s an example of webweb’s style and functionality. The network itself comes from [Hunter Wapman](http://hneutr.github.io/) et al.’s analysis of character co-occurrences in the novel _Infinite Jest_.
 
 {% include webweb.html webweb_json=site.data.infinite_jest responsive=true %}
 

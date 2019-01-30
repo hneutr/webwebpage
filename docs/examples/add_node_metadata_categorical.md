@@ -6,7 +6,7 @@ title: 'add node metadata: categorical'
 
 ---
 
-{% include webweb.html webweb_json=site.data.examples.add_node_metadata_categorical.json %}
+{% include webweb.html webweb_json=site.data.examples.add_node_metadata_categorical.json fix_width=false fix_height=false %}
 
 if the set of a metadata attribute's values contains strings (like `cooperativity` here), webweb'll display it as a categorical attribute.
 

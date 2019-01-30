@@ -7,7 +7,7 @@ title: freezeNodeMovement
 
 ---
 
-{% include webweb.html webweb_json=site.data.documentation.display.freezeNodeMovement.json %}
+{% include webweb.html webweb_json=site.data.documentation.display.freezeNodeMovement.json fix_width=false fix_height=false %}
 
 ```json
 type: boolean
