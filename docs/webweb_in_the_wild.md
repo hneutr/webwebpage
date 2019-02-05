@@ -8,6 +8,7 @@ permalink: /in-the-wild/
 
 For fun, here’s a running list of places webweb’s been used! If a project of yours uses webweb, shoot an [email](mailto:hunter.wapman@gmail.com) and we’ll add it to the list!
 
+- [Can you escape a maze without walls?](http://danlarremore.com/538Maze.html)
 - [Networks in Infinite Jest](https://hneutr.github.io/infinite_jest_webweb)
 - Remnants of an Ancient Metabolism without Phosphate. [Cell](https://www.cell.com/cell/fulltext/S0092-8674(17)30133-2)
 - Ape parasite origins of human malaria virulence genes. [Nature Commmunications](https://www.nature.com/articles/ncomms9368)
