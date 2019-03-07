@@ -1,0 +1,9 @@
+[
+    "---\n",
+    "nav_order: 11\n",
+    "name: kitchen sink\n",
+    "\n",
+    "---\n",
+    "\n",
+    "an example showing a bunch of ways to set node metadata, display networks, etc."
+]
