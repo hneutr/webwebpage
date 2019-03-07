@@ -92,7 +92,7 @@
     "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n",
     "\n",
     "ww.display.networkName = 'tree';\n",
-    "ww.display.networkLayer = 3;\n",
+    "ww.display.networkLayer = 2;\n",
     "ww.display.colorBy = 'ring';\n",
     "ww.display.sizeBy = 'degree';\n",
     "ww.display.gravity = 0.3;\n",

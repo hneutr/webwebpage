@@ -105,7 +105,7 @@
     "################################################################################\n",
     "\n",
     "web.display.networkName = 'tree'\n",
-    "web.display.networkLayer = 3\n",
+    "web.display.networkLayer = 2\n",
     "web.display.colorBy = 'ring'\n",
     "web.display.sizeBy = 'degree'\n",
     "web.display.gravity = .3\n",

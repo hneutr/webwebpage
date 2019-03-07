@@ -8,7 +8,7 @@ title: kitchen sink
 
 {% include webweb.html webweb_json=site.data.examples.kitchen_sink.json fix_width=false fix_height=false %}
 
-an example showing a bunch of ways to set node metadata, display networks, etc.
+This example shows a webweb visualization with the "kitchen sink" of options, including multiple networks, multi-layer networks, setting of display parameters, and the assigning of metadata in various ways.
 
 {% include code_switcher.html code_options="python---matlab---json" switcher_name="example-code-switcher" %}
 <div class='select-code-block example-code-switcher python-code-block select-code-block-visible'></div>
