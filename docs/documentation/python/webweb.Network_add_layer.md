@@ -19,28 +19,28 @@ parameters:
 - nodes: dict of node attribute dicts
 ```json
 {
-    'key1' : {
-        'attribute1' : 'value1',
+    'key1': {
+        'attribute1': 'value1',
         ...
     },
     ...
 }
 ```
-- metadata: dict of vectorized metadata and display information. 
+- metadata: dict of vectorized metadata and display information.
 ```python
 {
-    'attribute' : {
-        'values' : [ "attribute_value", ...],
+    'attribute': {
+        'values': [ "attribute_value", ...],
 
         # `categories` only needs to be supplied if `values` holds
         # categorical data that is represented by numbers.
         # the values in the `values` array will be used as indexes to
         # this array.
-        'categories' : ["category1", "category2", ...]
+        'categories': ["category1", "category2", ...]
 
         # `type` only needs to be set if you're displaying binary
-        # information with 0/1 instead of True/False 
-        'type' : 'binary',
+        # information with 0/1 instead of True/False
+        'type': 'binary',
     }
 }
 ```

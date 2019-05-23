@@ -1,0 +1,16 @@
+[
+    "from webweb import Web\n",
+    "\n",
+    "# Instantiate webweb object\n",
+    "web = Web([[0, 1], [0, 2], [0, 3], [0, 4], [0, 5]])\n",
+    "\n",
+    "# size and color by degree\n",
+    "web.display.sizeBy = 'degree'\n",
+    "web.display.colorBy = 'degree'\n",
+    "\n",
+    "# hide webweb's legend (it defaults to being shown)\n",
+    "web.display.showLegend = False\n",
+    "\n",
+    "# show the visualization\n",
+    "web.show()"
+]

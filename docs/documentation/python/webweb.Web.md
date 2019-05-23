@@ -11,7 +11,7 @@ title: webweb.Web
 webweb.Web(adjacency=[], title='webweb', display={}, **kwargs)
 ````
 
-a webweb object. 
+a webweb object.
 a collection of named webweb Network objects, a set of display parameters, and a title
 
 parameters:

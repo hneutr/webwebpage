@@ -1,0 +1,10 @@
+[
+    "---\n",
+    "name: showLegend\n",
+    "type: boolean\n",
+    "default: true\n",
+    "\n",
+    "---\n",
+    "\n",
+    "If `true`, webweb will display a legend describing how nodes are colored and sized."
+]

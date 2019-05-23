@@ -1,0 +1,40 @@
+{
+    "display": {
+        "colorBy": "degree",
+        "showLegend": false,
+        "sizeBy": "degree"
+    },
+    "networks": {
+        "webweb": {
+            "layers": [
+                {
+                    "edgeList": [
+                        [
+                            0,
+                            1
+                        ],
+                        [
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            3
+                        ],
+                        [
+                            0,
+                            4
+                        ],
+                        [
+                            0,
+                            5
+                        ]
+                    ],
+                    "metadata": null,
+                    "nodes": {}
+                }
+            ]
+        }
+    },
+    "title": "webweb"
+}

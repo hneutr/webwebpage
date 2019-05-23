@@ -1,7 +1,7 @@
 ---
 grand_parent: documentation
 layout: home
-nav_order: 20
+nav_order: 21
 parent: display
 title: sizeBy
 
