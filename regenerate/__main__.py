@@ -179,12 +179,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     refresh_webweb()
-    # examplify(
-    #     input_dir=EXAMPLES_INPUT_DIR,
-    #     data_output_dir=EXAMPLES_DATA_OUTPUT_DIR,
-    #     pages_output_dir=EXAMPLES_PAGES_OUTPUT_DIR,
-    #     nav_order=3,
-    #     container='examples',
-    # )
-    # docutize(DOCUMENTATION_PAGES_OUTPUT_DIR)
+    examplify(
+        input_dir=EXAMPLES_INPUT_DIR,
+        data_output_dir=EXAMPLES_DATA_OUTPUT_DIR,
+        pages_output_dir=EXAMPLES_PAGES_OUTPUT_DIR,
+        nav_order=3,
+        container='examples',
+    )
+    docutize(DOCUMENTATION_PAGES_OUTPUT_DIR)
     changelog.update(webweb_dir=WEBWEB_DIR, changelog_file=CHANGELOG_FILE)

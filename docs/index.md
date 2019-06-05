@@ -18,7 +18,7 @@ Here’s an example of webweb’s style and functionality. The network itself co
 
 - simple, lightweight, intuitive, and configurable
 - `python`, `networkx`, and `MATLAB` support
-- easy to share (one html file, no dependencies)
+- easy to share (visualizations are contained in a single html file that has no dependencies)
 - easy to embed
 - supports metadata, communities, weighted networks, and multi-layer networks
 
