@@ -1,10 +1,12 @@
 # this script recreates from scratch the documentation
-from examplify import examplify
 import argparse
 import os
 import shutil
 import subprocess
+from pathlib import Path
 
+from examplify import examplify
+import changelog
 import util
 
 WEBWEB_URL = "https://github.com/dblarremore/webweb.git"
@@ -27,6 +29,8 @@ DISPLAY_PAGES_OUTPUT_DIR = os.path.join(os.getcwd(), 'docs', 'documentation', 'd
 
 PYDOC_PAGES_OUTPUT_DIR = os.path.join(DOCUMENTATION_PAGES_OUTPUT_DIR, 'python')
 
+CHANGELOG_FILE = Path.cwd().joinpath('docs', 'changelog.md')
+
 def refresh_webweb():
     if os.path.isdir(WEBWEB_DIR):
         shutil.rmtree(WEBWEB_DIR)
@@ -34,10 +38,11 @@ def refresh_webweb():
     clone_webweb()
     copy_webweb_client_to_site()
 
+
 def clone_webweb():
-    # clone the repo
     process = subprocess.Popen('git clone {0}'.format(WEBWEB_URL), shell=True)
     process.wait()
+
 
 def copy_webweb_client_to_site():
     """copies the webweb assets to a jekyll-friendly location"""
@@ -85,17 +90,17 @@ def docutize(output_dir):
 
 def pydocutize(output_dir, parent, nav_order):
     functions_mapping = {
-        'Web' : {
-            'display_name' : 'webweb.Web',
-            'functions' : [
+        'Web': {
+            'display_name': 'webweb.Web',
+            'functions': [
                 '__init__',
                 'show',
                 'save',
             ],
         },
-        'Network' : {
-            'display_name' : 'webweb.Network',
-            'functions' : [
+        'Network': {
+            'display_name': 'webweb.Network',
+            'functions': [
                 '__init__',
                 'add_layer',
             ],
@@ -167,16 +172,19 @@ def pydocutize(output_dir, parent, nav_order):
 
             counter += 1
 
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     args = parser.parse_args()
 
     refresh_webweb()
-    examplify(
-        input_dir=EXAMPLES_INPUT_DIR,
-        data_output_dir=EXAMPLES_DATA_OUTPUT_DIR,
-        pages_output_dir=EXAMPLES_PAGES_OUTPUT_DIR,
-        nav_order=3,
-        container='examples',
-    )
-    docutize(DOCUMENTATION_PAGES_OUTPUT_DIR)
+    # examplify(
+    #     input_dir=EXAMPLES_INPUT_DIR,
+    #     data_output_dir=EXAMPLES_DATA_OUTPUT_DIR,
+    #     pages_output_dir=EXAMPLES_PAGES_OUTPUT_DIR,
+    #     nav_order=3,
+    #     container='examples',
+    # )
+    # docutize(DOCUMENTATION_PAGES_OUTPUT_DIR)
+    changelog.update(webweb_dir=WEBWEB_DIR, changelog_file=CHANGELOG_FILE)
