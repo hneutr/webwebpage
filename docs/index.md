@@ -55,7 +55,9 @@ webweb(edge_list);
 
 {% include code_switcher.html code_options="python---matlab" switcher_name="install-switcher" %}
 <div class='select-code-block python-code-block select-code-block-visible install-switcher'></div>
+
 ```python
+# requires numpy
 pip install webweb
 ```
 <div class='select-code-block matlab-code-block install-switcher'></div>

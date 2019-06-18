@@ -5,6 +5,19 @@ permalink: /changelog/
 title: changelog
 
 ---
+## 20190607 - 0.0.36
+
+- fixed bug introduced in `0.0.33` on linux where files won't pop up
+
+## 20190607 - 0.0.35
+
+- put `Show node names` widget above of `Highlight nodes named` widget
+
+## 20190606 - 0.0.34
+
+- fixed bug where links opacity and width were scaled without taking into account repeated edges. [issue](https://github.com/dblarremore/webweb/issues/43)
+- fixed loading of development client resources (non-user facing issue)
+
 ## 20190605 - 0.0.33
 
 - automated testing for python
