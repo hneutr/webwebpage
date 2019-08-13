@@ -64,3 +64,7 @@ pip install webweb
 ```matlab
 git clone https://github.com/dblarremore/webweb
 ```
+
+## citing webweb
+
+{% include webweb_citation.html %}
