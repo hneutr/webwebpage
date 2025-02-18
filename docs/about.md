@@ -8,7 +8,7 @@ permalink: /about/
 
 ## who made it?
 
-[Dan Larremore](http://danlarremore.com) made webweb in 2013 as a quick and easy way to visualize networks from matlab. [Michael Iuzzolino](https://www.linkedin.com/in/michael-iuzzolino-3a060696/) built the first python version. [Hunter Wapman](https://hneutr.github.io) upgraded everything to d3.v5, rebuilt the code to be smarter, faster, and more intuitive, and unified the way matlab and python work with the javascript. He also added all the colormaps, `networkx`, and multi-layer network support.
+[Dan Larremore](http://larremorelab.github.io) made webweb in 2013 as a quick and easy way to visualize networks from matlab. [Michael Iuzzolino](https://www.linkedin.com/in/michael-iuzzolino-3a060696/) built the first python version. [Hunter Wapman](https://hneutr.github.io) upgraded everything to d3.v5, rebuilt the code to be smarter, faster, and more intuitive, and unified the way matlab and python work with the javascript. He also added all the colormaps, `networkx`, and multi-layer network support.
 
 ## why?
 
